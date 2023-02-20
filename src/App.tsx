@@ -1,16 +1,29 @@
 import React, { useState } from 'react';
+import { useMutation } from 'react-query';
 import styled from '@emotion/styled';
 import airplane from '@images/airplane.png';
 import hatchback from '@images/hatchback.png';
+import { InputForm } from './types';
+import { getPlan } from './utils/openai';
 
 function App() {
-  const [inputForm, setInputForm] = useState({
+  const [inputForm, setInputForm] = useState<InputForm>({
     destination: "",
     days: "",
   });
+  const [isDimmed, setIsDimmed] = useState(false);
 
-  const getData = () => {
-
+  const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
+    onSuccess(data: any, variables, context) {
+      setIsDimmed(false);
+      if (data.status === 200) {
+        const text = data.data.choices[0].text; 
+      }
+    },
+  })
+  const getPlanAPIHandler = async () => {
+    setIsDimmed(true);
+    getPlanAPI.mutate();
   }
 
   return (
@@ -20,8 +33,13 @@ function App() {
       <Main>
         <input type="text" placeholder='목적지' value={inputForm.destination} onChange={(e) => setInputForm({...inputForm, destination: e.target.value})}/>
         <input type="number" placeholder='일 수' value={inputForm.days} onChange={(e) => setInputForm({...inputForm, days: e.target.value})}/>
-        <button onClick={getData}>해줘!</button>
+        <button onClick={getPlanAPIHandler}>해줘!</button>
       </Main>
+      {
+        isDimmed && (
+          <Dimmed></Dimmed>
+        )
+      }
     </AppContainer>
   );
 }
@@ -41,7 +59,7 @@ const AppContainer = styled.section`
     100% { background-position: 50px 50px }
   }
 
-  img:first-child {
+  img:first-of-type {
     left: 0px;
     top: 0px;
     width: 180px;
@@ -87,4 +105,11 @@ const Main = styled.main`
   }
 `;
 
-
+const Dimmed = styled.section`
+  position: fixed;
+  left: 0;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, .7);
+`;

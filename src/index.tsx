@@ -4,13 +4,19 @@ import './normalize.css';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
-);
+  );
+  
+const queryClient = new QueryClient();
+
 root.render(
   <React.StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
