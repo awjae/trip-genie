@@ -6,14 +6,16 @@ let config = new Configuration({
 });
 const openai = new OpenAIApi(config);
 
-const makeText = ({ destination, days }: InputForm) => {
-  return `${destination} 여행 계획을 ${parseInt(days)-1}박${days}일 일정으로 위도, 경도를 포함해서 추천해줘`;
+const makeText = ({ contry, destination, days }: InputForm) => {
+  // return `${destination} 여행 계획을 ${parseInt(days)-1}박${days}일 일정으로 위도, 경도를 포함해서 추천해줘`;
+  return `${contry} ${destination ? destination + "지역의 " : ""}여행 계획을 ${days}일 일정으로 위도, 경도를 포함해서 json format으로 한국어로 알려줘. 단, 하루에 3개의 일정으로 예상되는 데이터만 포함해줘.
+  {"DAY n" : [{"name":"", "lat": "", "lng": ""}]}`;
 }
 
-export const getPlan = async ({ destination, days }: InputForm) => {
+export const getPlan = async ({ contry, destination, days }: InputForm) => {
   if (!destination || !days) return
 
-  const text = makeText({destination, days});
+  const text = makeText({contry, destination, days});
 
   const result = await openai.createCompletion({
     model: "text-davinci-003",
@@ -26,6 +28,19 @@ export const getPlan = async ({ destination, days }: InputForm) => {
   })
 
   return new Promise((res, rej) => {
-    res(result);
+    let str = result.data.choices[0].text;
+    if (!str) rej("데이터 불량");
+    str = str!.replaceAll("\n","").replaceAll("\\\"","\"").replaceAll(" ","").replaceAll("]{","],{").replaceAll("]},{","],").replaceAll("],{\"","],\"").replaceAll("}D","},D").replaceAll("]\"","],\"");
+    if (str![0] !== "{") {
+      str = `{${str}`;
+    }
+    if (str![str.length-1] !== "}") {
+      str = `${str}}`;
+    }
+    const validateResult = {
+      ...result,
+      validateResponse: JSON.parse(str),
+    }
+    res(validateResult);
   })
 }

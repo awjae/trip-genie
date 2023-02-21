@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
       "@images/*": ["./assets/images/*"],
       "@app": ["./App.tsx"],
       "@pages/*": ["./pages/*"],
-      "@components/*": ["./components/*"]
+      "@components/*": ["./components/*"],
+      "@utils/*": ["./utils/*"],
+      "@types/*": ["./types/*"]
     }
   }
 }
