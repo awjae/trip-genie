@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import styled from '@emotion/styled';
-import airplane from '@images/airplane.png';
-import hatchback from '@images/hatchback.png';
-import { InputForm } from '../types/index';
-import { getPlan } from '../utils/openai';
+import airplane from '@/images/airplane.png';
+import hatchback from '@/images/hatchback.png';
+import { getPlan } from '@/utils/openai';
+import { InputForm } from '@/types/input';
 
 function Home() {
   const [inputForm, setInputForm] = useState<InputForm>({

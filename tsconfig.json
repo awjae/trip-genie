@@ -22,6 +22,8 @@
     "jsxImportSource": "@emotion/react"
   },
   "include": [
-    "src"
-  ]
+    "src",
+    "craco.config.js"
+  ],
+  "extends": "./tsconfig.paths.json",
 }

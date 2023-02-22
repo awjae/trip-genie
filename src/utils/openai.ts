@@ -1,5 +1,5 @@
 import { OpenAIApi, Configuration } from 'openai';
-import { InputForm } from '../types';
+import { InputForm } from '@/types';
 
 let config = new Configuration({
   apiKey: process.env.REACT_APP_OPENAI_KEY,
@@ -8,7 +8,8 @@ const openai = new OpenAIApi(config);
 
 const makeText = ({ contry, destination, days }: InputForm) => {
   // return `${destination} 여행 계획을 ${parseInt(days)-1}박${days}일 일정으로 위도, 경도를 포함해서 추천해줘`;
-  return `${contry} ${destination ? destination + "지역의 " : ""}여행 계획을 ${days}일 일정으로 위도, 경도를 포함해서 json format으로 한국어로 알려줘. 단, 하루에 3개의 일정으로 예상되는 데이터만 포함해줘.
+  // return `${contry} ${destination ? destination + "지역의 " : ""}여행 계획을 ${days}일 일정으로 위도, 경도를 포함해서 json format으로 알려줘. 단, 하루에 3개의 일정으로 예상되는 데이터만 포함해줘.
+  return `${contry} ${destination ? destination + "지역의 " : ""}주요 관광지 여행 계획을 ${days}일 일정으로 위도, 경도를 포함해서 json format으로 알려줘.
   {"DAY n" : [{"name":"", "lat": "", "lng": ""}]}`;
 }
 
