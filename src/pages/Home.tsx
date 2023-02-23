@@ -65,10 +65,44 @@ const HomeContainer = styled.section`
   }
 
   img:first-of-type {
-    left: 0px;
-    top: 0px;
+    position: absolute;
     width: 180px;
     height: 180px;
+    animation: airplane 25s infinite;
+    @keyframes airplane {
+      0% {
+        left: 5vw;
+        bottom: -180px;
+      }
+      30% {
+        left: 80vw;
+        bottom: calc(100vh + 180px);
+      }
+      100% {
+        left: 80vw;
+        bottom: calc(100vh + 180px);
+      }
+    }
+  }
+  img:nth-of-type(2) {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    animation: car 25s infinite;
+    @keyframes car {
+      0% {
+        left: -120px;
+        top: 10vh;
+      }
+      70% {
+        left: -120px;
+        top: 10vh;
+      }
+      100% {
+        left: calc(100vw + 240px);
+        top: 80vh;
+      }
+    }
   }
 `;
 
