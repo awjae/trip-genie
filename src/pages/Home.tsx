@@ -18,9 +18,8 @@ function Home() {
     animationSteps: 0,
   });
   const [isDimmed, setIsDimmed] = useState(false);
-  const [botState, setBotState] = useState({
-    animationSteps: 0,
-  })
+  const [botState, setBotState] = useState({animationSteps: 0});
+  const [defaultCardList, setDefaultCardList] = useState<any[]>();
 
   const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
     onSuccess(data: any, variables, context) {
@@ -58,6 +57,36 @@ function Home() {
         navigate('?list=1');
         res(1);
       },1200);
+    })
+    await new Promise((res, rej) => {
+      setTimeout(() => {
+        setDefaultCardList([
+          {
+            contry: "국내",
+            destination : "제주도",
+            days: 4,
+            url: "https://a.cdn-hotels.com/gdcs/production103/d1003/8556ed48-ce28-4041-945a-b0e93487660d.jpg",
+          }
+          ,{
+            contry: "일본",
+            destination : "도쿄",
+            days: 3,
+            url: "https://a.cdn-hotels.com/gdcs/production8/d946/e2c1433c-c92c-4148-82c0-65bde779c5e7.jpg",
+          }
+          ,{
+            contry: "베트남",
+            destination : "하노이",
+            days: 5,
+            url: "https://statics.vinpearl.com/du-lich-tu-tuc-ha-noi_1659022598.jpg",
+          }
+          ,{
+            contry: "미국",
+            destination : "뉴욕",
+            days: 6,
+            url: "https://t1.daumcdn.net/cfile/tistory/2150E24A56FDDB060A",
+          }
+        ]);
+      },500);
     })
   } 
   const FormAnimationStepHanlder = () => {
@@ -105,7 +134,23 @@ function Home() {
                 <div></div>
               </div>
               <div className='list'>
-
+                { defaultCardList && (
+                    <h1>이렇게 만들어 보겠습니다!</h1>
+                  )
+                }
+                <div className='cardListWrapper'>
+                { defaultCardList && defaultCardList.map((card, key) => {
+                    return <Card key={key}>
+                      <div className='background' style={{backgroundImage: `url(${(card.url)}`}}></div>
+                      <div className='info'>
+                        <p>{card.contry}</p>
+                        <p>{card.destination}</p>
+                        <p>{card.days-1}박 {card.days}일</p>
+                      </div>
+                    </Card>
+                  })
+                }
+                </div>
               </div>
             </BoardContainer>
           )
@@ -249,6 +294,7 @@ const BoardContainer = styled.section`
   top: 45%;
   transform: translateY(-50%);
   .backrgound {
+    position: absolute;
     width: 100%;
     height: 100%;
     div {
@@ -274,6 +320,79 @@ const BoardContainer = styled.section`
         100% { left: 0% }
       }
     }
+  }
+  .list {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    h1 {
+      margin: 20px;
+      color: #e8e8e8;
+      font-size: 36px;
+    }  
+    .cardListWrapper {
+      display: flex;
+      margin: 0px 5vw;
+      width: calc(100% - 10vw);
+      height: calc(100% - 90px);
+      align-items: center;
+      justify-content: space-between;
+      transition: filter .2s linear;
+      &:hover article:not(:hover) .background:not(:hover) {
+        filter: brightness(0.5) saturate(0) contrast(1) blur(10px);
+      }
+    }
+  }
+`;
+const Card = styled.article`
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 20px;
+  padding: 30px;
+  width: 20%;
+  height: 75%;
+  text-align: left;
+  font-family: 'IM-Bold';
+  color: rgba(255,255,255,0.9);
+  opacity: 1;
+  animation: card 2s;
+  transition: transform .2s linear;
+  cursor: pointer;
+  .background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    left: 0px;
+    top: 0px;
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    transition: filter .2s linear;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    border-radius: 19px;
+    background-color: rgba(0,0,0, .2);
+    width: 100%;
+    height: 100%;
+  }
+  @keyframes card {
+    0% {
+      opacity: 0;
+    }
+  }
+  div {
+    position: absolute;
+    p {
+      margin-bottom: 10px;
+      letter-spacing: 4px;
+    }
+  }
+  &:hover {
+    transform: scale(1.05) translateZ(0);
   }
 `;
 const Dimmed = styled.section`
