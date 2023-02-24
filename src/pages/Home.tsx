@@ -25,6 +25,7 @@ function Home() {
     onSuccess(data: any, variables, context) {
       if (data.status === 200) {
         console.log(data.validateResponse);
+        setBotState({animationSteps: 2});
       }
     },
     onError(error, variables, context) {
@@ -33,7 +34,7 @@ function Home() {
   })
   const getPlanAPIHandler = async () => {
     // setIsDimmed(true);
-    // getPlanAPI.mutate();
+    getPlanAPI.mutate();
     await playAnalyzeAnimation(); 
     // await new Promise((res, rej) => {
     //   setTimeout(() => {
@@ -84,9 +85,9 @@ function Home() {
       <img src={hatchback} alt="" />
         <Main className={FormAnimationStepHanlder()}>
           <Form className='inputForm'>
-            <input type="text" placeholder='국가' value={inputForm.contry} onChange={(e) => setInputForm({...inputForm, contry: e.target.value})}/>
-            <input type="text" placeholder='지역' value={inputForm.destination} onChange={(e) => setInputForm({...inputForm, destination: e.target.value})}/>
-            <input type="number" placeholder='일 수' value={inputForm.days} onChange={(e) => setInputForm({...inputForm, days: e.target.value})}/>
+            <input type="text" placeholder='어느 나라?' value={inputForm.contry} onChange={(e) => setInputForm({...inputForm, contry: e.target.value})}/>
+            <input type="text" placeholder='어느 지역?' value={inputForm.destination} onChange={(e) => setInputForm({...inputForm, destination: e.target.value})}/>
+            <input type="number" placeholder='몇 일?' value={inputForm.days} onChange={(e) => setInputForm({...inputForm, days: e.target.value})}/>
             <button onClick={getPlanAPIHandler}>해줘!</button>
           </Form>
           <Bot animationSteps={botState.animationSteps}></Bot>

@@ -100,6 +100,7 @@ const Card = styled.article`
   text-align: left;
   font-family: 'IM-Bold';
   color: rgba(255,255,255,0.9);
+  box-shadow: rgba(255, 255, 255, 0.25) 0px 7px 29px 0px;
   opacity: 1;
   animation: card 2s;
   transition: transform .2s linear;
