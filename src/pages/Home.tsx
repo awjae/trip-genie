@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import styled from '@emotion/styled';
 import airplane from '@/images/airplane.png';
 import hatchback from '@/images/hatchback.png';
-import botIcon from '@/images/bot.png';
-import botIcon_analyze from '@/images/bot_analyze.png';
 import { getPlan } from '@/utils/openai';
 import { InputForm } from '@/types/input';
 import Board from '@/components/Board';
+import { MOCK_CARDLIST } from '@/assets/mock';
+import Bot from '@/components/Bot';
 
 function Home() {
   const navigate = useNavigate();
@@ -18,13 +18,11 @@ function Home() {
     days: "",
     animationSteps: 0,
   });
-  const [isDimmed, setIsDimmed] = useState(false);
   const [botState, setBotState] = useState({animationSteps: 0});
   const [defaultCardList, setDefaultCardList] = useState<any[]>();
 
   const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
     onSuccess(data: any, variables, context) {
-      setIsDimmed(false);
       if (data.status === 200) {
         console.log(data.validateResponse);
       }
@@ -35,8 +33,8 @@ function Home() {
   })
   const getPlanAPIHandler = async () => {
     // setIsDimmed(true);
-    await playAnalyzeAnimation(); 
     // getPlanAPI.mutate();
+    await playAnalyzeAnimation(); 
     // await new Promise((res, rej) => {
     //   setTimeout(() => {
     //     setIsDimmed(false);
@@ -61,32 +59,7 @@ function Home() {
     })
     await new Promise((res, rej) => {
       setTimeout(() => {
-        setDefaultCardList([
-          {
-            contry: "국내",
-            destination : "제주도",
-            days: 4,
-            url: "https://a.cdn-hotels.com/gdcs/production103/d1003/8556ed48-ce28-4041-945a-b0e93487660d.jpg",
-          }
-          ,{
-            contry: "일본",
-            destination : "도쿄",
-            days: 3,
-            url: "https://a.cdn-hotels.com/gdcs/production8/d946/e2c1433c-c92c-4148-82c0-65bde779c5e7.jpg",
-          }
-          ,{
-            contry: "베트남",
-            destination : "하노이",
-            days: 5,
-            url: "https://statics.vinpearl.com/du-lich-tu-tuc-ha-noi_1659022598.jpg",
-          }
-          ,{
-            contry: "미국",
-            destination : "뉴욕",
-            days: 6,
-            url: "https://t1.daumcdn.net/cfile/tistory/2150E24A56FDDB060A",
-          }
-        ]);
+        setDefaultCardList(MOCK_CARDLIST);
       },500);
     })
   } 
@@ -116,27 +89,13 @@ function Home() {
             <input type="number" placeholder='일 수' value={inputForm.days} onChange={(e) => setInputForm({...inputForm, days: e.target.value})}/>
             <button onClick={getPlanAPIHandler}>해줘!</button>
           </Form>
-          <BotIconContainer>
-            {
-              botState.animationSteps !== 0 ?
-                <span className='analyze'>
-                  <img src={botIcon_analyze} alt="" />
-                </span>
-              :
-              <img src={botIcon} alt="" />
-            }
-          </BotIconContainer>
+          <Bot animationSteps={botState.animationSteps}></Bot>
         </Main>
         {
           inputForm.animationSteps === 3 && defaultCardList && (
             <Board cardList={defaultCardList}></Board>
           )
         }
-      {
-        isDimmed && (
-          <Dimmed></Dimmed>
-        )
-      }
     </HomeContainer>
   );
 }
@@ -199,16 +158,16 @@ const HomeContainer = styled.section`
 `;
 const Main = styled.main`
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  right: 50%;
+  bottom: 50%;
+  transform: translate(50%, 50%);
   &.scaledown .inputForm {
     scale: 0;
     opacity: 0;
   }
   &.rightdown {
-    left: 80%;
-    top: 75%;
+    right: 250px;
+    bottom: 250px;
     transition: all 1s cubic-bezier(.71,-0.3,.83,.95);
   }
 `;
@@ -246,30 +205,4 @@ const Form = styled.div`
   *:not(:last-child) {
     margin-bottom: 15px;
   }
-`;
-const BotIconContainer = styled.div`
-  position: absolute;
-  right: -25px;
-  bottom: -25px;
-  img {
-    width: 80px;
-    height: 80px;
-  }
-  .analyze::after {
-    content: '생각중...';
-    position: absolute;
-    display: inline-block;
-    width: 100px;
-    left: calc(50% - 30px);
-    bottom: -30px;
-  }
-`;
-
-const Dimmed = styled.section`
-  position: fixed;
-  left: 0;
-  top: 0px;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, .7);
 `;

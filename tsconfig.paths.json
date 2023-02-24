@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@/images/*": ["src/assets/images/*"],
+      "@/assets/*": ["src/assets/*"],
       "@/app": ["src/App.tsx"],
       "@/pages/*": ["src/pages/*"],
       "@/components/*": ["src/components/*"],
