@@ -115,16 +115,16 @@ const Card = styled.article`
     width: 100%;
     height: 100%;
     transition: filter .2s linear;
-  }
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    border-radius: 19px;
-    background-color: rgba(0,0,0, .2);
-    width: 100%;
-    height: 100%;
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      border-radius: 19px;
+      background-color: rgba(0,0,0, .3);
+      width: 100%;
+      height: 100%;
+    }
   }
   @keyframes card {
     0% {

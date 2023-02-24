@@ -4,7 +4,7 @@ import botIcon_analyze from '@/images/bot_analyze.png';
 import botIcon_ok from '@/images/bot_ok.png';
 import styled from '@emotion/styled';
 
-function Bot({ animationSteps }: {animationSteps: number;}) {
+function Bot({ animationSteps, goDetail }: {animationSteps: number; goDetail: Function;}) {
 
   const botSrc = (step: number) => {
     if (step === 2) return botIcon_ok;
@@ -16,9 +16,13 @@ function Bot({ animationSteps }: {animationSteps: number;}) {
     if (step === 2) return 'bounce';
     return '';
   }
+  const botClickHandler = () => {
+    if (animationSteps !== 2) return
+    goDetail();
+  }
 
   return (
-    <BotIconContainer className={botClass(animationSteps)}>
+    <BotIconContainer className={botClass(animationSteps)} onClick={botClickHandler}>
       <span>
         <img src={botSrc(animationSteps)} alt="" />
       </span>

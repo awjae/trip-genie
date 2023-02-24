@@ -34,13 +34,15 @@ function Home() {
   })
   const getPlanAPIHandler = async () => {
     // setIsDimmed(true);
-    getPlanAPI.mutate();
+    // getPlanAPI.mutate();
     await playAnalyzeAnimation(); 
-    // await new Promise((res, rej) => {
-    //   setTimeout(() => {
-    //     setIsDimmed(false);
-    //   }, 5000)
-    // });
+    await new Promise((res, rej) => {
+      setTimeout(() => {
+        console.log(123)
+        setBotState({animationSteps: 2});
+        res(1);
+      }, 5000)
+    });
   } 
   const playAnalyzeAnimation = async () => {
     setInputForm({...inputForm, animationSteps: 1});
@@ -61,6 +63,7 @@ function Home() {
     await new Promise((res, rej) => {
       setTimeout(() => {
         setDefaultCardList(MOCK_CARDLIST);
+        res(1);
       },500);
     })
   } 
@@ -79,6 +82,10 @@ function Home() {
     }
   }
 
+  const goDetail = () => {
+    
+  }
+
   return (
     <HomeContainer>
       <img src={airplane} alt="" />
@@ -90,7 +97,7 @@ function Home() {
             <input type="number" placeholder='몇 일?' value={inputForm.days} onChange={(e) => setInputForm({...inputForm, days: e.target.value})}/>
             <button onClick={getPlanAPIHandler}>해줘!</button>
           </Form>
-          <Bot animationSteps={botState.animationSteps}></Bot>
+          <Bot animationSteps={botState.animationSteps} goDetail={goDetail}></Bot>
         </Main>
         {
           inputForm.animationSteps === 3 && defaultCardList && (
