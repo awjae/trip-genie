@@ -9,6 +9,7 @@ import { InputForm } from '@/types/input';
 import Board from '@/components/Board';
 import { MOCK_CARDLIST } from '@/assets/mock';
 import Bot from '@/components/Bot';
+import useDataStore from '@/store/dataStore';
 
 function Home() {
   const navigate = useNavigate();
@@ -20,12 +21,14 @@ function Home() {
   });
   const [botState, setBotState] = useState({animationSteps: 0});
   const [defaultCardList, setDefaultCardList] = useState<any[]>();
+  const { data, setData } = useDataStore((state: any) => state.data);
 
   const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
     onSuccess(data: any, variables, context) {
       if (data.status === 200) {
         console.log(data.validateResponse);
         setBotState({animationSteps: 2});
+        setData(data.validateResponse);
       }
     },
     onError(error, variables, context) {
@@ -38,7 +41,6 @@ function Home() {
     await playAnalyzeAnimation(); 
     await new Promise((res, rej) => {
       setTimeout(() => {
-        console.log(123)
         setBotState({animationSteps: 2});
         res(1);
       }, 5000)
@@ -74,16 +76,12 @@ function Home() {
     if (inputForm.animationSteps === 1) {
       return 'scaledown';
     }
-    if (inputForm.animationSteps === 2) {
-      return 'scaledown rightdown';
-    }
-    if (inputForm.animationSteps === 3) {
-      return 'scaledown rightdown';
-    }
+    return 'scaledown rightdown';
   }
 
   const goDetail = () => {
-    
+    // setBotState({...botState, animationSteps: 3});
+
   }
 
   return (
