@@ -5,10 +5,12 @@ import { Tile } from 'ol/layer';
 import { OSM } from 'ol/source';
 import { fromLonLat, get, Projection } from 'ol/proj';
 import 'ol/ol.css';
+import useMapStore from '@/store/mapStore';
 
 
 function Detail() {
-  const [map, setMap] = useState<Object>();  
+  const map = useMapStore((state: any) => state.map);
+  const setMap = useMapStore((state: any) => state.setMap);
 
   useEffect(() => {
     const temp = new Map({
@@ -28,6 +30,10 @@ function Detail() {
     return () => temp.setTarget(undefined);
   }, []);
   
+useEffect(() => {
+  console.log(map)
+}, [map])
+
 
   return (
     <DetailContainer>
