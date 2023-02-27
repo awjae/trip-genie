@@ -37,16 +37,15 @@ function Home() {
     },
   })
   const getPlanAPIHandler = async () => {
-    // setIsDimmed(true);
     await playAnalyzeAnimation(); 
-    // getPlanAPI.mutate();
-    await new Promise((res, rej) => {
-      setTimeout(() => {
-        setBotState({animationSteps: 2});
-        setData(MOCK_DATA);
-        res(1);
-      }, 5000)
-    });
+    getPlanAPI.mutate();
+    // await new Promise((res, rej) => {
+    //   setTimeout(() => {
+    //     setBotState({animationSteps: 2});
+    //     setData(MOCK_DATA);
+    //     res(1);
+    //   }, 5000)
+    // });
   } 
   const playAnalyzeAnimation = async () => {
     setInputForm({...inputForm, animationSteps: 1});
@@ -82,7 +81,6 @@ function Home() {
   }
 
   const goDetail = () => {
-    // setBotState({...botState, animationSteps: 3});
     setCurtain(true);
     setTimeout(() => {
       navigate('/detail');
