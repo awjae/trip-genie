@@ -21,7 +21,8 @@ function Home() {
   });
   const [botState, setBotState] = useState({animationSteps: 0});
   const [defaultCardList, setDefaultCardList] = useState<any[]>();
-  const { data, setData } = useDataStore((state: any) => state.data);
+  const { setData } = useDataStore((state: any) => state.data);
+  const [curtain, setCurtain] = useState(false);
 
   const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
     onSuccess(data: any, variables, context) {
@@ -81,7 +82,10 @@ function Home() {
 
   const goDetail = () => {
     // setBotState({...botState, animationSteps: 3});
-
+    setCurtain(true);
+    setTimeout(() => {
+      navigate('/detail');
+    },1800);
   }
 
   return (
@@ -100,6 +104,11 @@ function Home() {
         {
           inputForm.animationSteps === 3 && defaultCardList && (
             <Board cardList={defaultCardList}></Board>
+          )
+        }   
+        {
+          curtain && (
+            <Curtain></Curtain>
           )
         }
     </HomeContainer>
@@ -210,5 +219,25 @@ const Form = styled.div`
   }
   *:not(:last-child) {
     margin-bottom: 15px;
+  }
+`;
+
+const Curtain = styled.div`
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f0f0f0;
+  transform: translateX(100%);
+  animation: curtain 2s;
+  @keyframes curtain {
+    0% {
+      transform: translateX(100%);
+    }
+    50% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
   }
 `;
