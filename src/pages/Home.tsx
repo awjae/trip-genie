@@ -38,8 +38,8 @@ function Home() {
   })
   const getPlanAPIHandler = async () => {
     // setIsDimmed(true);
-    // getPlanAPI.mutate();
     await playAnalyzeAnimation(); 
+    // getPlanAPI.mutate();
     await new Promise((res, rej) => {
       setTimeout(() => {
         setBotState({animationSteps: 2});
@@ -215,7 +215,7 @@ const Form = styled.div`
     border: 1px solid #e8e8e8;
     cursor: pointer;
     &:hover {
-      background-color: #b4b3ff;
+      background-color: #607d8b;
     }
   }
   *:not(:last-child) {
