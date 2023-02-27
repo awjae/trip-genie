@@ -2,11 +2,13 @@ import React from 'react';
 import botIcon from '@/images/bot.png';
 import botIcon_analyze from '@/images/bot_analyze.png';
 import botIcon_ok from '@/images/bot_ok.png';
+import botIcon_error from '@/images/bot_error.png';
 import styled from '@emotion/styled';
 
 function Bot({ animationSteps, goDetail }: {animationSteps: number; goDetail: Function;}) {
 
   const botSrc = (step: number) => {
+    if (step === 3) return botIcon_error; 
     if (step === 2) return botIcon_ok;
     if (step === 1) return botIcon_analyze;
     return botIcon

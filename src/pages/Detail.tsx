@@ -6,11 +6,13 @@ import { OSM } from 'ol/source';
 import { fromLonLat, get, Projection } from 'ol/proj';
 import 'ol/ol.css';
 import useMapStore from '@/store/mapStore';
+import useDataStore from '@/store/dataStore';
 
 
 function Detail() {
   const map = useMapStore((state: any) => state.map);
   const setMap = useMapStore((state: any) => state.setMap);
+  const data = useDataStore((state: any) => state.data);
 
   useEffect(() => {
     const temp = new Map({
@@ -30,9 +32,11 @@ function Detail() {
     return () => temp.setTarget(undefined);
   }, []);
   
-useEffect(() => {
-  console.log(map)
-}, [map])
+  useEffect(() => {
+    if (Object.keys(map).length > 0) {
+      console.log(data)
+    }
+  }, [map])
 
 
   return (

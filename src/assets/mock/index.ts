@@ -24,3 +24,38 @@ export const MOCK_CARDLIST = [
     url: "https://t1.daumcdn.net/cfile/tistory/2150E24A56FDDB060A",
   }
 ];
+
+export const MOCK_DATA = {
+  "DAY 1": [
+      {
+          "destination": "Jeju Olle Trail",
+          "description": "Popular trekking route that offers spectacular coastal views",
+          "latitude": 33.3991306,
+          "longitude": 126.3067882
+      }
+  ],
+  "DAY 2": [
+      {
+          "destination": "Cheonjeyeon Waterfall",
+          "description": "Famous three-tier waterfall with a crystal-clear pond",
+          "latitude": 33.3598981,
+          "longitude": 126.7101155
+      }
+  ],
+  "DAY 3": [
+      {
+          "destination": "Halla Mountain",
+          "description": "Active volcano and highest mountain in South Korea",
+          "latitude": 33.3593091,
+          "longitude": 126.5302646
+      }
+  ],
+  "DAY 4": [
+      {
+          "destination": "Manjanggul",
+          "description": "Welknown lava tube cave, with 8.9 km, one of the longest in the world",
+          "latitude": 33.2071518,
+          "longitude": 126.687939
+      }
+  ]
+}

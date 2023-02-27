@@ -7,7 +7,7 @@ import hatchback from '@/images/hatchback.png';
 import { getPlan } from '@/utils/openai';
 import { InputForm } from '@/types/input';
 import Board from '@/components/Board';
-import { MOCK_CARDLIST } from '@/assets/mock';
+import { MOCK_CARDLIST, MOCK_DATA } from '@/assets/mock';
 import Bot from '@/components/Bot';
 import useDataStore from '@/store/dataStore';
 
@@ -21,7 +21,7 @@ function Home() {
   });
   const [botState, setBotState] = useState({animationSteps: 0});
   const [defaultCardList, setDefaultCardList] = useState<any[]>();
-  const { setData } = useDataStore((state: any) => state.data);
+  const setData = useDataStore((state: any) => state.setData);
   const [curtain, setCurtain] = useState(false);
 
   const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
@@ -33,7 +33,7 @@ function Home() {
       }
     },
     onError(error, variables, context) {
-        console.log(error);
+      setBotState({animationSteps: 3});
     },
   })
   const getPlanAPIHandler = async () => {
@@ -43,6 +43,7 @@ function Home() {
     await new Promise((res, rej) => {
       setTimeout(() => {
         setBotState({animationSteps: 2});
+        setData(MOCK_DATA);
         res(1);
       }, 5000)
     });

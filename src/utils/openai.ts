@@ -40,6 +40,9 @@ export const getPlan = async ({ contry, destination, days }: InputForm) => {
     let str = result.data.choices[0].text;
     if (!str) rej("데이터 불량");
     str = str!.replaceAll("\n","").replaceAll("\\\"","\"").replaceAll("]}{","],").replaceAll("]{","],{").replaceAll("]},{","],").replaceAll("],{\"","],\"").replaceAll("}D","},D").replaceAll("]\"","],\"");
+    if (str![str.length-1] === ".") {
+      str = str.slice(0, -1);
+    }
     if (str![0] !== "{") {
       str = `{${str}`;
     }

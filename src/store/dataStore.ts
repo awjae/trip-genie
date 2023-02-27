@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 const useDataStore = create((set) => ({
   data: {},
-  setData: () => set((state: any) => ({ ...state, data: state })),
+  setData: (data: any) => set((state: any) => ({ data: data })),
 }))
 
 export default useDataStore;
