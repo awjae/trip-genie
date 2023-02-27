@@ -75,6 +75,9 @@ function Detail() {
       const [left, top] = map.getPixelFromCoordinate(feature.getGeometry().getCoordinates()).map((pixel: number) => Math.floor(pixel));
       setMapPopover({...mapPopover, isShow: true, content: feature.get("name"), left: left, top: top});
     });
+    map.on('movestart', () => {
+      setMapPopover({...mapPopover, isShow: false});
+    });
   };
 
   const setPopup = () => {
@@ -134,11 +137,16 @@ const DetailContainer = styled.main`
   background-color: #f0f0f0;
   #mapPopup {
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 20px;
     width: 130px;
     height: 60px;
     padding: 16px;
     background-color: #efefef;
+    font-size: 16px;
+    text-align: center;
     line-height: 22px;
     letter-spacing: 1px;
     box-shadow: 0 4px 10px 0 rgb(0 0 0 / 40%);
@@ -157,7 +165,7 @@ const DetailContainer = styled.main`
       display: none;
     }
     &.true {
-      display: block;
+      display: flex;
     }
   } 
 `;
