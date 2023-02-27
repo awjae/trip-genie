@@ -43,7 +43,7 @@ function Detail() {
       const iconFeatureList:Feature<Geometry>[] = [];
       data[day].forEach((target: Destination) => {
         const iconFeature = new Feature({
-          geometry: new Point(fromLonLat([target.longitude, target.latitude], get('EPSG:3857') as Projection)),
+          geometry: new Point([target.longitude, target.latitude]),
           name: target.destination,
           population: 4000,
           rainfall: 500,
@@ -97,8 +97,8 @@ function Detail() {
       ],
       target: 'map',
       view: new View({
-        projection: get('EPSG:3857') as Projection,
-        center: fromLonLat([126.936743, 37.486479], get('EPSG:3857') as Projection),
+        projection: get('EPSG:4326') as Projection,
+        center: [126.936743, 37.486479],
         zoom: 10
       }),
     })
