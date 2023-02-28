@@ -46,6 +46,9 @@ export const getPlan = async ({ contry, destination, days }: InputForm) => {
     if (str![0] !== "{") {
       str = `{${str}`;
     }
+    if (str![str.length-1] !== "\"" && str![str.length-1] !== "}") {
+      str = `${str}"}`;
+    }
     if (str![str.length-1] !== "}") {
       str = `${str}}`;
     }

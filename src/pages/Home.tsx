@@ -10,6 +10,7 @@ import Board from '@/components/Board';
 import { MOCK_CARDLIST, MOCK_DATA } from '@/assets/mock';
 import Bot from '@/components/Bot';
 import useDataStore from '@/store/dataStore';
+import { getEngToKor } from '@/utils/papagoAPI';
 
 function Home() {
   const navigate = useNavigate();
@@ -24,12 +25,20 @@ function Home() {
   const setData = useDataStore((state: any) => state.setData);
   const [curtain, setCurtain] = useState(false);
 
+  const getPapagoText = useMutation('getPapagoText', (text: object) => getEngToKor(text), {
+    onSuccess(data, variables, context) {
+      setBotState({animationSteps: 2});
+      setData(data);
+    },
+    onError(error, variables, context) {
+        
+    },
+  });
+
   const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
     onSuccess(data: any, variables, context) {
       if (data.status === 200) {
-        console.log(data.validateResponse);
-        setBotState({animationSteps: 2});
-        setData(data.validateResponse);
+        getPapagoText.mutate(data.validateResponse);
       }
     },
     onError(error, variables, context) {
