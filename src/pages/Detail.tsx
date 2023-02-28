@@ -23,6 +23,7 @@ function Detail() {
   const [mapPopover, setMapPopover] = useState({
     popup: {},
     isShow: false,
+    title: "",
     content: "",
     left: 0,
     top: 0,
@@ -45,6 +46,7 @@ function Detail() {
         const iconFeature = new Feature({
           geometry: new Point([target.longitude, target.latitude]),
           name: target.destination,
+          desc: target.description,
           population: 4000,
           rainfall: 500,
         });
@@ -73,7 +75,7 @@ function Detail() {
         return;
       }
       const [left, top] = map.getPixelFromCoordinate(feature.getGeometry().getCoordinates()).map((pixel: number) => Math.floor(pixel));
-      setMapPopover({...mapPopover, isShow: true, content: feature.get("name"), left: left, top: top});
+      setMapPopover({...mapPopover, isShow: true, title: feature.get("name"), content: feature.get("desc"), left: left, top: top});
     });
     map.on('movestart', () => {
       setMapPopover({...mapPopover, isShow: false});
@@ -122,8 +124,11 @@ function Detail() {
       <MapWrapper>
         <div id="map"></div>
       </MapWrapper>
-      <div id="mapPopup" style={{ left: mapPopover.left - 82, top: mapPopover.top - 150 }} className={String(mapPopover.isShow)}>
-        <span>{mapPopover.content}</span>
+      <div id="mapPopup" style={{ left: mapPopover.left - 82, top: mapPopover.top - 160 }} className={String(mapPopover.isShow)}>
+        <span>
+          <em>{mapPopover.title}</em><br></br>
+          {mapPopover.content}
+        </span>
       </div>
     </DetailContainer>
   )
@@ -142,7 +147,7 @@ const DetailContainer = styled.main`
     justify-content: center;
     border-radius: 20px;
     width: 130px;
-    height: 60px;
+    height: 70px;
     padding: 16px;
     background-color: #efefef;
     font-size: 16px;
@@ -150,6 +155,17 @@ const DetailContainer = styled.main`
     line-height: 22px;
     letter-spacing: 1px;
     box-shadow: 0 4px 10px 0 rgb(0 0 0 / 40%);
+    span {
+      white-space: pre-wrap;
+      font-size: 14px;
+      word-break: keep-all;
+      em {
+        font-family: 'IM-Bold';
+        font-size: 20px;
+        font-style: normal;
+        word-break: keep-all;
+      }
+    }
     &:after {
       display: block;
       content: "";
