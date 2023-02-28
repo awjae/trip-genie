@@ -30,6 +30,7 @@
     "zustand": "^4.3.3"
   },
   "scripts": {
+    "backend": "node backend/server.js",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",

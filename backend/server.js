@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const cors = require('cors');
+const MOCK_DATA = require('./data');
 require('dotenv').config();
 
 const app = express();
@@ -15,6 +16,8 @@ const PAPAGO_ID = process.env.REACT_APP_PAPAGO_ID_3;
 const PAPAGO_PW = process.env.REACT_APP_PAPAGO_PW_3;
 
 app.post('/translate', function (req, res) {
+  res.status(200).json(MOCK_DATA); return
+
   const api_url = 'https://openapi.naver.com/v1/papago/n2mt';
   const query = req.body.text;
   let tempTextList = "";
@@ -59,6 +62,7 @@ app.post('/translate', function (req, res) {
         });
       }
       res.status(200).json(newObject);
+      console.dir(newObject);
     } catch (error) {
       console.log(JSON.parse(body))
     }

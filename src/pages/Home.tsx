@@ -47,7 +47,8 @@ function Home() {
   })
   const getPlanAPIHandler = async () => {
     await playAnalyzeAnimation(); 
-    getPlanAPI.mutate();
+    // getPlanAPI.mutate();
+    getPapagoText.mutate({"test": "test"});
     // await new Promise((res, rej) => {
     //   setTimeout(() => {
     //     setBotState({animationSteps: 2});
