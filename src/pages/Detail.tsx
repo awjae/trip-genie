@@ -130,6 +130,21 @@ function Detail() {
           {mapPopover.content}
         </span>
       </div>
+      {
+        Object.keys(data).length > 0 && (
+          <LeftNav>
+            <ul>
+            {
+              Object.keys(data).map((key, idx) => (
+                <li key={idx}>
+                  {(idx + 1) + ' 일'}
+                </li>
+              ))
+            }
+            </ul>
+          </LeftNav>
+        )
+      }
     </DetailContainer>
   )
 }
@@ -192,5 +207,25 @@ const MapWrapper = styled.section`
   #map {
     width: 100%;
     height: 100%;
+  }
+`;
+
+const LeftNav = styled.nav`
+  position: fixed;
+  top: 50%;
+  left: 0px;
+  transform: translateY(-50%);
+  li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #fff;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
   }
 `;

@@ -1,4 +1,4 @@
-export const MOCK_DATA = {
+const MOCK_DATA = {
   'DAY 1': [
     {
       destination: '천제연 폭포',
@@ -79,4 +79,6 @@ export const MOCK_DATA = {
       longitude: '126.526248'
     }
   ]
-}
+};
+
+module.exports = MOCK_DATA;

@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const cors = require('cors');
-const MOCK_DATA = require('./data');
+const MOCK_DATA = require('./data.ts');
 require('dotenv').config();
 
 const app = express();
