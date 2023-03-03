@@ -14,6 +14,7 @@ import { Destination, MapData } from '@/types/map';
 import { Geometry, Point } from 'ol/geom';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
+import Contents from '@/components/map/Contents';
 
 
 function Detail() {
@@ -21,6 +22,7 @@ function Detail() {
   const setMap = useMapStore((state: any) => state.setMap);
   const data = useDataStore((state: any) => state.data);
   const [leftNav, setLeftNav] = useState<number>();
+  const [contentsData, setContentsData] = useState([]);
   const [mapPopover, setMapPopover] = useState({
     popup: {},
     isShow: false,
@@ -132,6 +134,9 @@ function Detail() {
     <DetailContainer>
       <MapWrapper>
         <div id="map"></div>
+        { leftNav !== undefined && leftNav > -1 && (
+          <Contents></Contents>
+        )}
       </MapWrapper>
       <div id="mapPopup" style={{ left: mapPopover.left - 82, top: mapPopover.top - 160 }} className={String(mapPopover.isShow)}>
         <span>
@@ -211,6 +216,7 @@ const DetailContainer = styled.main`
 `;
 
 const MapWrapper = styled.section`
+  display: flex;
   width: 100%;
   height: 100%;
   #map {
@@ -243,3 +249,4 @@ const LeftNav = styled.nav`
     }
   }
 `;
+
