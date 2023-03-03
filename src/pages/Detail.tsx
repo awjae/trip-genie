@@ -97,11 +97,13 @@ function Detail() {
   };
 
   const laftNavHandler = (idx: number) => {
+    map.getLayers().getArray().forEach((layer: any) =>  layer.setOpacity(1));
     if (leftNav === idx) {
       setLeftNav(-1);
       return
     }
     setLeftNav(idx);
+    map.getLayers().getArray().filter((layer:any) => layer.get("name") !== `DAY ${idx + 1}`).forEach((layer: any) => layer.setOpacity(.3));
   }
  
   useEffect(() => {
