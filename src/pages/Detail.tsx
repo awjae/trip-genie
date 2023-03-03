@@ -20,6 +20,7 @@ function Detail() {
   const map = useMapStore((state: any) => state.map);
   const setMap = useMapStore((state: any) => state.setMap);
   const data = useDataStore((state: any) => state.data);
+  const [leftNav, setLeftNav] = useState<number>();
   const [mapPopover, setMapPopover] = useState({
     popup: {},
     isShow: false,
@@ -91,6 +92,14 @@ function Detail() {
     });
     map.addOverlay(popup);
     setMapPopover({...mapPopover, popup: popup});
+  };
+
+  const laftNavHandler = (idx: number) => {
+    if (leftNav === idx) {
+      setLeftNav(-1);
+      return
+    }
+    setLeftNav(idx);
   }
  
   useEffect(() => {
@@ -136,7 +145,7 @@ function Detail() {
             <ul>
             {
               Object.keys(data).map((key, idx) => (
-                <li key={idx}>
+                <li key={idx} onClick={() => laftNavHandler(idx)} className={leftNav === idx ? 'active' : ''}>
                   {(idx + 1) + ' 일'}
                 </li>
               ))
@@ -223,7 +232,12 @@ const LeftNav = styled.nav`
     background-color: #fff;
     width: 100px;
     height: 50px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     cursor: pointer;
+    &:hover, &.active {
+      box-shadow: rgba(157, 255, 0, 0.24) 0px 3px 8px;
+      scale: 1.05;
+    }
     &:not(:last-child) {
       margin-bottom: 20px;
     }
