@@ -24,7 +24,7 @@ app.post('/translate', function (req, res) {
   for (let key in query) {
     query[key].forEach(item => {
       tempTextList += `${item.destination}?? `; 
-      tempTextList += `${item.description}!! `; 
+      tempTextList += `${item.description}## `; 
     });
   }
   const options = {
@@ -51,7 +51,7 @@ app.post('/translate', function (req, res) {
 
     try {
       const resultText = JSON.parse(body).message.result.translatedText;
-      const tempArr = resultText.split("!! ").map(item => item.split("?? "));
+      const tempArr = resultText.split("##").map(item => item.split("?? "));
       const newObject = Object.assign(query);
       let i = 0;
       for (let key in newObject) {
@@ -62,7 +62,6 @@ app.post('/translate', function (req, res) {
         });
       }
       res.status(200).json(newObject);
-      console.dir(newObject);
     } catch (error) {
       console.log(JSON.parse(body))
     }
