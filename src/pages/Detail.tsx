@@ -22,7 +22,7 @@ function Detail() {
   const setMap = useMapStore((state: any) => state.setMap);
   const data = useDataStore((state: any) => state.data);
   const [leftNav, setLeftNav] = useState<number>();
-  const [contentsData, setContentsData] = useState([]);
+  const [isActiveRightContents, setIsActiveRightContents] = useState(false);
   const [mapPopover, setMapPopover] = useState({
     popup: {},
     isShow: false,
@@ -99,11 +99,13 @@ function Detail() {
   const laftNavHandler = (idx: number) => {
     map.getLayers().getArray().forEach((layer: any) =>  layer.setOpacity(1));
     if (leftNav === idx) {
+      setIsActiveRightContents(false);
       setLeftNav(-1);
       return
     }
     setLeftNav(idx);
-    map.getLayers().getArray().filter((layer:any) => layer.get("name") !== `DAY ${idx + 1}`).forEach((layer: any) => layer.setOpacity(.3));
+    setIsActiveRightContents(true);
+    map.getLayers().getArray().filter((layer: any, idx: number) => idx > 0).filter((layer:any) => layer.get("name") !== `DAY ${idx + 1}`).forEach((layer: any) => layer.setOpacity(.3));
   }
  
   useEffect(() => {
@@ -136,8 +138,8 @@ function Detail() {
     <DetailContainer>
       <MapWrapper>
         <div id="map"></div>
-        { leftNav !== undefined && leftNav > -1 && (
-          <Contents></Contents>
+        { isActiveRightContents && leftNav !== undefined && (
+          <Contents title={leftNav} data={data[Object.keys(data)[leftNav]]}></Contents>
         )}
       </MapWrapper>
       <div id="mapPopup" style={{ left: mapPopover.left - 82, top: mapPopover.top - 160 }} className={String(mapPopover.isShow)}>
