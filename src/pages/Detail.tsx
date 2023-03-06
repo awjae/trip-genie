@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Map, View, Feature, Overlay } from 'ol';
 import { Tile } from 'ol/layer';
 import { OSM } from 'ol/source';
@@ -32,6 +32,9 @@ function Detail() {
     top: 0,
   });
   const mapPopupRef = useRef<HTMLInputElement>(null);
+  const moveStartFn = useCallback(() => {
+    setMapPopover({...mapPopover, isShow: false});
+  }, [])
 
   const setPointLayer = (data: any) => {
     if (Object.keys(data).length < 1) return
@@ -74,16 +77,13 @@ function Detail() {
       const feature = map.forEachFeatureAtPixel(evt.pixel, (feature: any) => {
         return feature;
       });
-      console.log(feature, evt.pixel)
       if (!feature) {
         return;
       }
       const [left, top] = map.getPixelFromCoordinate(feature.getGeometry().getCoordinates()).map((pixel: number) => Math.floor(pixel));
       setMapPopover({...mapPopover, isShow: true, title: feature.get("name"), content: feature.get("desc"), left: left, top: top});
     });
-    map.on('movestart', () => {
-      setMapPopover({...mapPopover, isShow: false});
-    });
+    map.on('movestart', moveStartFn);
   };
 
   const setPopup = () => {
@@ -110,15 +110,21 @@ function Detail() {
   }
 
   const contentsClickHandler = (item: any) => {
-    const pixel = map.getPixelFromCoordinate([Number(item.longitude), Number(item.latitude)]);
-    pixel[1] -= 15;
-    map.dispatchEvent({    //        
-      type: 'click',
-      pixel: pixel,
+    setMapPopover({...mapPopover, isShow: false});
+    map.removeEventListener('movestart', moveStartFn);
+  
+    map.getView().animate({
+      center: [Number(item.longitude), Number(item.latitude)],
+      duration: 500,
+    }, () => {
+      const pixel = map.getPixelFromCoordinate([Number(item.longitude), Number(item.latitude)]);
+      pixel[1] -= 15;
+      map.dispatchEvent({
+        type: 'click',
+        pixel: pixel,
+      });
+      map.addEventListener('movestart', moveStartFn);
     });
-
-    
-    // map.getView().setCenter([Number(item.longitude), Number(item.latitude)]);
   }
  
   useEffect(() => {
