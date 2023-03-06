@@ -37,7 +37,7 @@ function Detail() {
     if (Object.keys(data).length < 1) return
     const iconStyle = new Style({
       image: new Icon({
-        anchor: [0.5, 46],
+        anchor: [0.5, 32],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
         src: mapPointIcon,
@@ -74,6 +74,7 @@ function Detail() {
       const feature = map.forEachFeatureAtPixel(evt.pixel, (feature: any) => {
         return feature;
       });
+      console.log(feature, evt.pixel)
       if (!feature) {
         return;
       }
@@ -107,6 +108,18 @@ function Detail() {
     setIsActiveRightContents(true);
     map.getLayers().getArray().filter((layer: any, idx: number) => idx > 0).filter((layer:any) => layer.get("name") !== `DAY ${idx + 1}`).forEach((layer: any) => layer.setOpacity(.3));
   }
+
+  const contentsClickHandler = (item: any) => {
+    const pixel = map.getPixelFromCoordinate([Number(item.longitude), Number(item.latitude)]);
+    pixel[1] -= 15;
+    map.dispatchEvent({    //        
+      type: 'click',
+      pixel: pixel,
+    });
+
+    
+    // map.getView().setCenter([Number(item.longitude), Number(item.latitude)]);
+  }
  
   useEffect(() => {
     const temp = new Map({
@@ -139,10 +152,10 @@ function Detail() {
       <MapWrapper>
         <div id="map"></div>
         { isActiveRightContents && leftNav !== undefined && (
-          <Contents title={leftNav} data={data[Object.keys(data)[leftNav]]}></Contents>
+          <Contents title={leftNav} data={data[Object.keys(data)[leftNav]]} click={contentsClickHandler}></Contents>
         )}
       </MapWrapper>
-      <div id="mapPopup" style={{ left: mapPopover.left - 82, top: mapPopover.top - 160 }} className={String(mapPopover.isShow)}>
+      <div id="mapPopup" style={{ left: mapPopover.left - 82, top: mapPopover.top - 142 }} className={String(mapPopover.isShow)}>
         <span>
           <em>{mapPopover.title}</em><br></br>
           {mapPopover.content}

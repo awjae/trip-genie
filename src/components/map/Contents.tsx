@@ -1,7 +1,7 @@
 import { ContentsType } from '@/types/contents';
 import styled from '@emotion/styled';
 
-function Contents({ title, data }: ContentsType) {
+function Contents({ title, data, click }: ContentsType) {
 
   return (
     <ContentsContainer>
@@ -10,7 +10,7 @@ function Contents({ title, data }: ContentsType) {
         { 
           data.length > 0 && data.map((item, idx) => {
             return (
-              <li key={idx}>
+              <li key={idx} onClick={() => click(item)}>
                 <h2>{item.destination}</h2>
                 <p>{item.description}</p>
               </li>
@@ -27,6 +27,8 @@ export default Contents;
 const ContentsContainer = styled.section`
   padding: 20px;
   width: 48vw;
+  cursor: pointer;
+  //애니매이션 시, re-render 됨... 어떻게 하면 최적화?
   /* animation: rightToLeft 1s;
   @keyframes rightToLeft {
     0% {
