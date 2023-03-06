@@ -98,6 +98,7 @@ function Detail() {
   };
 
   const laftNavHandler = (idx: number) => {
+    setMapPopover({...mapPopover, isShow: false});
     map.getLayers().getArray().forEach((layer: any) =>  layer.setOpacity(1));
     if (leftNav === idx) {
       setIsActiveRightContents(false);
