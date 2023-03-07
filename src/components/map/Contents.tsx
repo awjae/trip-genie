@@ -1,18 +1,31 @@
 import { ContentsType } from '@/types/contents';
+import { Destination } from '@/types/map';
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 function Contents({ title, data, click }: ContentsType) {
+
+  const [selectedList, setSelectedList] = useState(data.map(item => ({...item, isActive: false })));
+
+  const itemClickHandler = (item: Destination, idx: number) => {
+    if (selectedList[idx].isActive) {
+      setSelectedList(selectedList.map(el => ({...el, isActive: false})));
+      return
+    }
+    setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
+    click(item);
+  }
 
   return (
     <ContentsContainer>
       <header>{title + 1}일차!</header>
       <ul>
         { 
-          data.length > 0 && data.map((item, idx) => {
+          selectedList.length > 0 && selectedList.map((item, idx) => {
             return (
-              <li key={idx} onClick={() => click(item)}>
+              <li key={idx} onClick={() => itemClickHandler(item, idx)} className={item.isActive ? 'active' : ''}>
                 <h2>{item.destination}</h2>
-                <p>{item.description}</p>
+                {/* <p>{item.description}</p> */}
               </li>
             )
           })
@@ -26,7 +39,7 @@ export default Contents;
 
 const ContentsContainer = styled.section`
   padding: 20px;
-  width: 48vw;
+  width: 50vw;
   cursor: pointer;
   //애니매이션 시, re-render 됨... 어떻게 하면 최적화?
   /* animation: rightToLeft 1s;
@@ -47,16 +60,29 @@ const ContentsContainer = styled.section`
     font-size: 32px;
     box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
   }
-  ul li {
+  ul {
+    display: flex;
+    justify-content: space-between;
+    li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 15px;
-    padding: 20px;
-    background-color: #ffeba4;
-    width: calc(100% - 40px);
-    &:not(:last-child) {
-      margin-bottom: 20px;
+    padding: 10px;
+    background-color: #e5c967;
+    width: 25%;
+    height: 50px;
+    &:hover, &.active {
+      background-color: #fedf73;
     }
     h2 {
-      margin-bottom: 10px;
+      font-size: 16px;
+      width: 100%;
+      word-break: keep-all;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      text-align: center;
     }
+  }
   }
 `;
