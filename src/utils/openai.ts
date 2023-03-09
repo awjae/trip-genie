@@ -27,11 +27,11 @@ export const getPlan = async ({ contry, destination, days }: InputForm) => {
   const text = makeText({contry, destination, days});
 
   const result = await openai.createCompletion({
-    // model: "text-davinci-003",
-    model: "gpt-3.5-turbo",
+    model: "text-davinci-003",
+    // model: "gpt-3.5-turbo",
     prompt: text,
     temperature: 1,
-    max_tokens: 1024,
+    max_tokens: 2048,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,

@@ -1,7 +1,7 @@
 import { ContentsType } from '@/types/contents';
 import { Destination } from '@/types/map';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function Contents({ title, data, click }: ContentsType) {
 
@@ -15,6 +15,10 @@ function Contents({ title, data, click }: ContentsType) {
     setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
     click(item);
   }
+
+  useEffect(() => {
+    setSelectedList(data.map(item => ({...item, isActive: false })));
+  }, [data])
 
   return (
     <ContentsContainer>
