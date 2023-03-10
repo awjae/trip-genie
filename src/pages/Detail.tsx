@@ -15,9 +15,15 @@ import { Geometry, Point } from 'ol/geom';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import Contents from '@/components/map/Contents';
-
+import { useQuery } from 'react-query';
+import { getSearchBlog } from '@/utils/searchAPI';
 
 function Detail() {
+  useQuery("searchBlog", () => getSearchBlog("제주도"), {
+    onSuccess(data) {
+        console.log(data);
+    },
+  })
   const map = useMapStore((state: any) => state.map);
   const setMap = useMapStore((state: any) => state.setMap);
   const data = useDataStore((state: any) => state.data);
