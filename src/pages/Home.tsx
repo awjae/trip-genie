@@ -10,6 +10,7 @@ import Board from '@/components/Board';
 import { MOCK_CARDLIST, MOCK_DATA } from '@/assets/mock';
 import Bot from '@/components/Bot';
 import useDataStore from '@/store/dataStore';
+import useInputStore from '@/store/inputStore';
 import { getEngToKor } from '@/utils/papagoAPI';
 
 function Home() {
@@ -22,6 +23,7 @@ function Home() {
   });
   const [botState, setBotState] = useState({animationSteps: 0});
   const [defaultCardList, setDefaultCardList] = useState<any[]>();
+  const setInput = useInputStore((state: any) => state.setInput)
   const setData = useDataStore((state: any) => state.setData);
   const [curtain, setCurtain] = useState(false);
 
@@ -92,6 +94,7 @@ function Home() {
 
   const goDetail = () => {
     setCurtain(true);
+    setInput({ contry: inputForm.contry, destination: inputForm.destination, days: inputForm.days });
     setTimeout(() => {
       navigate('/detail');
     },1800);
