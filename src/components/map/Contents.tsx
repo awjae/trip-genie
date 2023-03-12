@@ -2,6 +2,7 @@ import { ContentsType } from '@/types/contents';
 import { Destination } from '@/types/map';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import BlogContents from './BlogContents';
 
 function Contents({ title, data, click }: ContentsType) {
 
@@ -35,6 +36,7 @@ function Contents({ title, data, click }: ContentsType) {
           })
         }
       </ul>
+      <BlogContents></BlogContents>
     </ContentsContainer>
   )
 }

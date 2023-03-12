@@ -7,17 +7,13 @@ let config = new Configuration({
 const openai = new OpenAIApi(config);
 
 const makeText = ({ contry, destination, days }: InputForm) => {
-  // return `${destination} 여행 계획을 ${parseInt(days)-1}박${days}일 일정으로 위도, 경도를 포함해서 추천해줘`;
-  // return `${contry} ${destination ? destination + "지역의 " : ""}여행 계획을 ${days}일 일정으로 위도, 경도를 포함해서 json format으로 알려줘. 단, 하루에 3개의 일정으로 예상되는 데이터만 포함해줘.
-  // return `${contry} ${destination ? destination + "지역의 " : ""}주요 관광지 여행 계획을 ${days}일 일정으로 위도, 경도를 포함해서 json format으로 알려줘.
-  // return `${contry} ${destination ? destination + "지역의 " : ""}주요 관광지 ${days}곳을 위도, 경도를 포함해서 json format으로 알려줘.
-  // {"DAY n" : [{"name":"", "lat": "", "lng": ""}]}`;
   // let text = `Write only data in json format for a ${days}-day itinerary of major tourist spots in ${destination}, ${contry}.
+  // {"DAY 1": [{"destination":"","description":"","latitude":"","longitude":""}, {"destination":"","description":"","latitude":"","longitude":""}, {"destination":"","description":"","latitude":"","longitude":""}]`;
   let text = `${contry} ${destination} 주요 관광지 ${4}일 일정 데이터만 json 형식으로 작성. value는 한글로.
   ----foramt----
-  {"DAY 1": [{"destination":"","description":"","latitude":"","longitude":""}, {"destination":"","description":"","latitude":"","longitude":""}, {"destination":"","description":"","latitude":"","longitude":""}]`;
+  {"DAY 1": [{"destination":"","latitude":"","longitude":""}, {"destination":"","latitude":"","longitude":""}, {"destination":"","latitude":"","longitude":""}]`;
   for (let i = 2; i <= Number(days); i++) {
-    text += `, "DAY ${i}": [{"destination":"","description":"","latitude":"","longitude":""}, {"destination":"","description":"","latitude":"","longitude":""}, {"destination":"","description":"","latitude":"","longitude":""}]`;
+    text += `, "DAY ${i}": [{"destination":"","latitude":"","longitude":""}, {"destination":"","latitude":"","longitude":""}, {"destination":"","latitude":"","longitude":""}]`;
   }
   text += `}.`;
   return text;
@@ -32,8 +28,8 @@ export const getPlan = async ({ contry, destination, days }: InputForm) => {
     model: "text-davinci-003",
     // model: "gpt-3.5-turbo",
     prompt: text,
-    temperature: .5,
-    max_tokens: 1500,
+    temperature: 1,
+    max_tokens: 2048,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,

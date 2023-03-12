@@ -42,7 +42,7 @@ function Home() {
       if (data.status === 200) {
         // getPapagoText.mutate(data.validateResponse);
         setBotState({animationSteps: 2});
-        setData(data);
+        setData(data.validateResponse);
       }
     },
     onError(error, variables, context) {

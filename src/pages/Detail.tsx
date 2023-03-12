@@ -17,13 +17,10 @@ import VectorLayer from 'ol/layer/Vector';
 import Contents from '@/components/map/Contents';
 import { useQuery } from 'react-query';
 import { getSearchBlog } from '@/utils/searchAPI';
+import BlogContents from '@/components/map/BlogContents';
+import { MOCK_BLOG_DATA } from '@/assets/mock';
 
 function Detail() {
-  useQuery("searchBlog", () => getSearchBlog("제주도"), {
-    onSuccess(data) {
-        console.log(data);
-    },
-  })
   const map = useMapStore((state: any) => state.map);
   const setMap = useMapStore((state: any) => state.setMap);
   const data = useDataStore((state: any) => state.data);
@@ -168,7 +165,7 @@ function Detail() {
           <Contents title={leftNav} data={data[Object.keys(data)[leftNav]]} click={contentsClickHandler}></Contents>
         )}
       </MapWrapper>
-      <div id="mapPopup" style={{ left: mapPopover.left - 82, top: mapPopover.top - 142 }} className={String(mapPopover.isShow)}>
+      <div id="mapPopup" style={{ left: mapPopover.left - 82, top: mapPopover.top - 122 }} className={String(mapPopover.isShow)}>
         <span>
           <em>{mapPopover.title}</em><br></br>
           {mapPopover.content}
@@ -206,7 +203,7 @@ const DetailContainer = styled.main`
     justify-content: center;
     border-radius: 20px;
     width: 130px;
-    height: 70px;
+    height: 50px;
     padding: 16px;
     background-color: #efefef;
     font-size: 16px;
