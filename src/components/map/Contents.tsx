@@ -24,7 +24,7 @@ function Contents({ title, data, click }: ContentsType) {
   return (
     <ContentsContainer>
       <header>{title + 1}일차!</header>
-      <ul>
+      <SelectedListWrapper>
         { 
           selectedList.length > 0 && selectedList.map((item, idx) => {
             return (
@@ -35,7 +35,7 @@ function Contents({ title, data, click }: ContentsType) {
             )
           })
         }
-      </ul>
+      </SelectedListWrapper>
       <BlogContents></BlogContents>
     </ContentsContainer>
   )
@@ -46,7 +46,6 @@ export default Contents;
 const ContentsContainer = styled.section`
   padding: 20px;
   width: 50vw;
-  cursor: pointer;
   //애니매이션 시, re-render 됨... 어떻게 하면 최적화?
   /* animation: rightToLeft 1s;
   @keyframes rightToLeft {
@@ -66,11 +65,14 @@ const ContentsContainer = styled.section`
     font-size: 32px;
     box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
   }
-  ul {
+`;
+
+const SelectedListWrapper = styled.ul`
+  display: flex;
+  justify-content: space-between;
+  li {
     display: flex;
-    justify-content: space-between;
-    li {
-    display: flex;
+    cursor: pointer;
     justify-content: center;
     align-items: center;
     border-radius: 15px;
@@ -89,6 +91,5 @@ const ContentsContainer = styled.section`
       overflow: hidden;
       text-align: center;
     }
-  }
   }
 `;
