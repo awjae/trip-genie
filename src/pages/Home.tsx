@@ -40,7 +40,9 @@ function Home() {
   const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
     onSuccess(data: any, variables, context) {
       if (data.status === 200) {
-        getPapagoText.mutate(data.validateResponse);
+        // getPapagoText.mutate(data.validateResponse);
+        setBotState({animationSteps: 2});
+        setData(data);
       }
     },
     onError(error, variables, context) {
@@ -49,8 +51,8 @@ function Home() {
   })
   const getPlanAPIHandler = async () => {
     await playAnalyzeAnimation(); 
-    // getPlanAPI.mutate();
-    getPapagoText.mutate({"test": "test"});
+    getPlanAPI.mutate();
+    // getPapagoText.mutate({"test": "test"});
     // await new Promise((res, rej) => {
     //   setTimeout(() => {
     //     setBotState({animationSteps: 2});
