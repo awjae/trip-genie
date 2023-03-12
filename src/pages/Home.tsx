@@ -49,7 +49,15 @@ function Home() {
       setBotState({animationSteps: 3});
     },
   })
+
+  const validationInputForm = () => {
+    if (inputForm.contry === "") return true;
+    if (inputForm.destination === "") return true;
+    if (inputForm.days === "") return true;
+    return false
+  }
   const getPlanAPIHandler = async () => {
+    if (validationInputForm()) return;
     await playAnalyzeAnimation(); 
     getPlanAPI.mutate();
     // getPapagoText.mutate({"test": "test"});
