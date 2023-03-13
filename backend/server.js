@@ -87,6 +87,26 @@ app.post('/searchBlog', function (req, res) {
     res.status(200).json(body);
   });
 });
+app.post('/searchImage', function (req, res) {
+  const { query } = req.body;
+  const api_url = `https://openapi.naver.com/v1/search/image?query=${encodeURI(query)}`;
+  console.log(query)
+  const options = {
+    url: api_url,
+    headers: {
+      'X-Naver-Client-Id': PAPAGO_ID,
+      'X-Naver-Client-Secret': PAPAGO_PW
+    }
+  };
+  request.get(options, function (error, response, body) {
+    if (error) {
+      console.log(error);
+      return;
+    }
+    
+    res.status(200).json(body);
+  });
+});
 app.listen(3010, () => {
   console.log('http://127.0.0.1:3010/translate app listening on port 3010!');
 });
