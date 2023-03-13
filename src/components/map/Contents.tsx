@@ -5,15 +5,11 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import BlogContents from './BlogContents';
+import ImageContents from './ImageContents';
 
 function Contents({ title, data, click }: ContentsType) {
-  const imageSearch = useMutation('searchImage', () => getSearchImage("제주도 성산일출봉"), {
-    onSuccess(data, variables, context) {
-        console.log(JSON.stringify(data));
-    },
-  });
-
   const [selectedList, setSelectedList] = useState(data.map(item => ({...item, isActive: false })));
+  const [imageList, setImageList] = useState<any>([]);
 
   const itemClickHandler = (item: Destination, idx: number) => {
     if (selectedList[idx].isActive) {
@@ -23,6 +19,12 @@ function Contents({ title, data, click }: ContentsType) {
     setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
     click(item);
   };
+  
+  const imageSearch = useMutation('searchImage', () => getSearchImage("제주도 성산일출봉"), {
+    onSuccess(data, variables, context) {
+      setImageList(data.items);
+    },
+  });
 
   useEffect(() => {
     setSelectedList(data.map(item => ({...item, isActive: false })));
@@ -44,6 +46,11 @@ function Contents({ title, data, click }: ContentsType) {
           })
         }
       </SelectedListWrapper>
+      {
+        imageList.length > 0 && (
+          <ImageContents data={imageList}></ImageContents>
+        )
+      }
       <BlogContents></BlogContents>
     </ContentsContainer>
   )
@@ -54,6 +61,7 @@ export default Contents;
 const ContentsContainer = styled.section`
   padding: 20px;
   width: 50vw;
+  overflow: auto;
   //애니매이션 시, re-render 됨... 어떻게 하면 최적화?
   /* animation: rightToLeft 1s;
   @keyframes rightToLeft {
