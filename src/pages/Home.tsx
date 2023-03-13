@@ -59,12 +59,12 @@ function Home() {
   const getPlanAPIHandler = async () => {
     if (validationInputForm()) return;
     await playAnalyzeAnimation(); 
-    getPlanAPI.mutate();
+    // getPlanAPI.mutate();
     // getPapagoText.mutate({"test": "test"});
     // await new Promise((res, rej) => {
     //   setTimeout(() => {
-    //     setBotState({animationSteps: 2});
-    //     setData(MOCK_DATA);
+        setBotState({animationSteps: 2}); 
+        setData(MOCK_DATA);
     //     res(1);
     //   }, 5000)
     // });
