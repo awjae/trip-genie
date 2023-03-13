@@ -1,4 +1,5 @@
 const SEARCH_BLOG_PROXY_API_URL = '//localhost:3010/searchBlog';
+const SEARCH_IMAGE_PROXY_API_URL = '//localhost:3010/searchImage';
 
 
 export const getSearchBlog = async (query : string) => {
@@ -14,7 +15,6 @@ export const getSearchBlog = async (query : string) => {
   const res = await fetch(SEARCH_BLOG_PROXY_API_URL, options);
   return res.json();
 };
-
 
 const MOCK_DATA = {
 	"lastBuildDate":"Sat, 11 Mar 2023 01:15:40 +0900",
@@ -104,3 +104,19 @@ const MOCK_DATA = {
 		}
 	]
 }
+
+export const getSearchImage = async (query : string) => {
+	return MOCK_IMAGE_DATA;
+	const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({query: query}),
+  };
+  
+  const res = await fetch(SEARCH_IMAGE_PROXY_API_URL, options);
+  return res.json();
+}
+
+const MOCK_IMAGE_DATA = {"lastBuildDate":"Mon, 13 Mar 2023 16:49:45 +0900","total":16465,"start":1,"display":10,"items":[{"title":"제주도 성산일출봉 등등 - 뽐뿌:등산포럼 제주도 성산일출봉 등등","link":"https://cdn.ppomppu.co.kr/zboard/data3/2023/0222/20230222230340_WKf586bJbE.jpeg","thumbnail":"https://search.pstatic.net/sunny/?src=https://cdn.ppomppu.co.kr/zboard/data3/2023/0222/20230222230340_WKf586bJbE.jpeg&type=b150","sizeheight":"1125","sizewidth":"1500"},{"title":"Jeju Island제주도 | 제주도 성산일출봉 韓國濟州島 城山日出峰 Seongsan Ilchulbong, … | Flickr Jeju Island제주도","link":"https://c1.staticflickr.com/5/4248/34533033250_54f7f058c8_b.jpg","thumbnail":"https://search.pstatic.net/sunny/?src=https://c1.staticflickr.com/5/4248/34533033250_54f7f058c8_b.jpg&type=b150","sizeheight":"683","sizewidth":"1024"},{"title":"제주도 필수 여행지: 성산일출봉","link":"http://post.phinf.naver.net/20160713_107/1468395442481I4SwR_JPEG/IWaUfD7nCTYKiz6qPPplS2v7Ehns.jpg","thumbnail":"https://search.pstatic.net/common/?src=http://post.phinf.naver.net/20160713_107/1468395442481I4SwR_JPEG/IWaUfD7nCTYKiz6qPPplS2v7Ehns.jpg&type=b150","sizeheight":"2000","sizewidth":"3000"},{"title":"제주도 2017년 연말 성산일출봉 불꽃 축제!!","link":"http://post.phinf.naver.net/MjAxNzExMTlfMjUx/MDAxNTExMDg4MjYxNDQ0.3jAcILHWw5puHXBfNOxrFn1oZ8NjtvB0s1p9LR3Oajcg.SK1j561IA4zoiqbK-z2VAizbgvAJq_3llO854os_ICog.JPEG/IJ9LfNVlXc0pgqSZlcoPnZjZ6z6M.jpg","thumbnail":"https://search.pstatic.net/common/?src=http://post.phinf.naver.net/MjAxNzExMTlfMjUx/MDAxNTExMDg4MjYxNDQ0.3jAcILHWw5puHXBfNOxrFn1oZ8NjtvB0s1p9LR3Oajcg.SK1j561IA4zoiqbK-z2VAizbgvAJq_3llO854os_ICog.JPEG/IJ9LfNVlXc0pgqSZlcoPnZjZ6z6M.jpg&type=b150","sizeheight":"1600","sizewidth":"900"},{"title":"제주도성산일출봉맛집 날씨가 짱났지만.. 맛이 짱이였어!","link":"http://post.phinf.naver.net/MjAxNzA3MjdfMzMg/MDAxNTAxMTQ0MTY0NDkw._2uVrMRj2DbJ428oyyBENXiiMVPd8IRTbk0EU1bSmNYg.QuunAHydxZ26VSVwQG65vo41svyXiW61xSB5tMsoY40g.JPEG/I8VWQuCsSpHCbTXeldl59QXOO7uU.jpg","thumbnail":"https://search.pstatic.net/common/?src=http://post.phinf.naver.net/MjAxNzA3MjdfMzMg/MDAxNTAxMTQ0MTY0NDkw._2uVrMRj2DbJ428oyyBENXiiMVPd8IRTbk0EU1bSmNYg.QuunAHydxZ26VSVwQG65vo41svyXiW61xSB5tMsoY40g.JPEG/I8VWQuCsSpHCbTXeldl59QXOO7uU.jpg&type=b150","sizeheight":"667","sizewidth":"1000"},{"title":"MMMD13000021-003 | 게티이미지코리아 | 성산일출봉, 제주도 Rights-Managed 이미지","link":"https://thumb2.gettyimageskorea.com/image_preview/700/201310/MBI/MMMD13000021-003.jpg","thumbnail":"https://search.pstatic.net/sunny/?src=https://thumb2.gettyimageskorea.com/image_preview/700/201310/MBI/MMMD13000021-003.jpg&type=b150","sizeheight":"487","sizewidth":"700"},{"title":"뽐뿌:등산포럼 - 제주도 사려니 숲 , 성산 일출봉 제주도 사려니 숲 , 성산 일출봉","link":"http://cache.ppomppu.co.kr/zboard/data3/2014/0117/1389938115_DSC_8226.JPG","thumbnail":"https://search.pstatic.net/sunny/?src=http://cache.ppomppu.co.kr/zboard/data3/2014/0117/1389938115_DSC_8226.JPG&type=b150","sizeheight":"803","sizewidth":"1200"},{"title":"제주도 표류의 역사 - 성산일출봉","link":"https://dbscthumb-phinf.pstatic.net/2492_000_2/20220708145028773_J6YI6IIQ1.jpg/gc34_6_i1.jpg?type=m4500_4500_fst_n","thumbnail":"https://search.pstatic.net/common/?src=https://dbscthumb-phinf.pstatic.net/2492_000_2/20220708145028773_J6YI6IIQ1.jpg/gc34_6_i1.jpg?type=m4500_4500_fst_n&type=b150","sizeheight":"654","sizewidth":"1024"},{"title":"성산일출봉 맛집 성산달래식당 제주도에 왔으면 생선구이 한번은 먹어야죠","link":"http://img.ezmember.co.kr/cache/board/2016/09/14/TMP_85ae93cdd19e8fb6157fc9d05da3679b.jpg","thumbnail":"https://search.pstatic.net/sunny/?src=http://img.ezmember.co.kr/cache/board/2016/09/14/TMP_85ae93cdd19e8fb6157fc9d05da3679b.jpg&type=b150","sizeheight":"600","sizewidth":"900"},{"title":"제주도 성산 일출봉","link":"http://imgnews.naver.net/image/5161/2014/01/03/307594_740043_742_59_20140103020203.jpg","thumbnail":"https://search.pstatic.net/common/?src=http://imgnews.naver.net/image/5161/2014/01/03/307594_740043_742_59_20140103020203.jpg&type=b150","sizeheight":"357","sizewidth":"540"}]};

@@ -1,10 +1,17 @@
 import { ContentsType } from '@/types/contents';
 import { Destination } from '@/types/map';
+import { getSearchImage } from '@/utils/searchAPI';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import { useMutation } from 'react-query';
 import BlogContents from './BlogContents';
 
 function Contents({ title, data, click }: ContentsType) {
+  const imageSearch = useMutation('searchImage', () => getSearchImage("제주도 성산일출봉"), {
+    onSuccess(data, variables, context) {
+        console.log(JSON.stringify(data));
+    },
+  });
 
   const [selectedList, setSelectedList] = useState(data.map(item => ({...item, isActive: false })));
 
@@ -15,10 +22,11 @@ function Contents({ title, data, click }: ContentsType) {
     }
     setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
     click(item);
-  }
+  };
 
   useEffect(() => {
     setSelectedList(data.map(item => ({...item, isActive: false })));
+    imageSearch.mutate();
   }, [data])
 
   return (
