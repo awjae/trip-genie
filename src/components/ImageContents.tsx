@@ -1,21 +1,33 @@
 import styled from '@emotion/styled';
-import React from 'react'
+import React, { useState } from 'react';
+import ImageViwer from '@/components/ImageViewer';
 
 function ImageContents({ data }: { data: any[] }) {
+  const [imageViewer, setImageViewer] = useState({
+    isShow: false,
+    url: "",
+  });
+  console.log(data)
+
   return (
     <ImageContentsContainer>
-      <div className='mainBanner'>
+      <div className='mainBanner' onClick={() => setImageViewer({ isShow: true, url: data[0].link })}>
         <img src={data[0].thumbnail} alt="" />
       </div>
       <ul>
       {
         data.filter((_: any, idx: number) => idx > 0).map((item: any, idx: number) => (
-          <li key={idx} className='subImage'>
+          <li key={idx} className='subImage' onClick={() => setImageViewer({ isShow: true, url: item.link })}>
             <img src={item.thumbnail} alt="" />
           </li>
         ))
       }
       </ul>
+      {
+        imageViewer.isShow && (
+          <ImageViwer url={imageViewer.url} close={() => setImageViewer({ ...imageViewer, isShow: false })}></ImageViwer>
+        )
+      }
     </ImageContentsContainer>
   )
 }
@@ -24,11 +36,10 @@ export default ImageContents;
 
 const ImageContentsContainer = styled.section`
   .mainBanner {
-    h2 {
-      font-size: 21px;
-    }
     img {
+      border-radius: 15px;
       width: 100%;
+      cursor: pointer;
     }
   }
   ul {
@@ -48,6 +59,7 @@ const ImageContentsContainer = styled.section`
         object-fit: cover;
         height: 80px;
         border-radius: 15px;
+        cursor: pointer;
       }
     }
   }

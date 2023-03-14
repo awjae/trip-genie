@@ -4,8 +4,8 @@ import { getSearchImage } from '@/utils/searchAPI';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
-import BlogContents from './BlogContents';
-import ImageContents from './ImageContents';
+import BlogContents from '@/components/map/BlogContents';
+import ImageContents from '@/components/ImageContents';
 
 function Contents({ title, data, click }: ContentsType) {
   const [selectedList, setSelectedList] = useState(data.map(item => ({...item, isActive: false })));

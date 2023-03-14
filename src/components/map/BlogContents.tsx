@@ -9,7 +9,6 @@ function BlogContents() {
   //   },
   // })
   const [blogData, setBlogData] = useState(MOCK_BLOG_DATA);
-  console.log(blogData)
 
   return (
     <BlogContentsContainer>
