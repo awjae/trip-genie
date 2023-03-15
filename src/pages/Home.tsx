@@ -39,12 +39,11 @@ function Home() {
 
   const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
     onSuccess(data: any, variables, context) {
-      console.log(data);
-      if (data.status === 200) {
-        // getPapagoText.mutate(data.validateResponse);
-        // setBotState({animationSteps: 2});
-        // setData(data.validateResponse);
-      }
+      setBotState({animationSteps: 2});
+      setData(data.validateResponse);
+      // if (data.status === 200) {
+      // getPapagoText.mutate(data.validateResponse);
+      // }
     },
     onError(error, variables, context) {
       setBotState({animationSteps: 3});
