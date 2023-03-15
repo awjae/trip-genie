@@ -107,6 +107,7 @@ app.post('/searchImage', function (req, res) {
     res.status(200).json(body);
   });
 });
+
 app.listen(3010, () => {
   console.log('http://127.0.0.1:3010/translate app listening on port 3010!');
 });

@@ -39,10 +39,11 @@ function Home() {
 
   const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
     onSuccess(data: any, variables, context) {
+      console.log(data);
       if (data.status === 200) {
         // getPapagoText.mutate(data.validateResponse);
-        setBotState({animationSteps: 2});
-        setData(data.validateResponse);
+        // setBotState({animationSteps: 2});
+        // setData(data.validateResponse);
       }
     },
     onError(error, variables, context) {
@@ -59,12 +60,12 @@ function Home() {
   const getPlanAPIHandler = async () => {
     if (validationInputForm()) return;
     await playAnalyzeAnimation(); 
-    // getPlanAPI.mutate();
+    getPlanAPI.mutate();
     // getPapagoText.mutate({"test": "test"});
     // await new Promise((res, rej) => {
     //   setTimeout(() => {
-        setBotState({animationSteps: 2}); 
-        setData(MOCK_DATA);
+        // setBotState({animationSteps: 2}); 
+        // setData(MOCK_DATA);
     //     res(1);
     //   }, 5000)
     // });

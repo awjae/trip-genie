@@ -1,4 +1,4 @@
-import { OpenAIApi, Configuration } from 'openai';
+import { OpenAIApi, Configuration, CreateCompletionRequest } from 'openai';
 import { InputForm } from '@/types/input';
 
 let config = new Configuration({
@@ -18,6 +18,10 @@ const makeText = ({ contry, destination, days }: InputForm) => {
   text += `}.`;
   return text;
 }
+// const makeText = ({ contry, destination, days }: InputForm) => {
+//   let text = `${contry} ${destination} 주요 관광지 ${days}일 여행 일정을 알려주세요.`
+//   return text;
+// }
 
 export const getPlan = async ({ contry, destination, days }: InputForm) => {
   if (!destination || !days) return
@@ -26,7 +30,6 @@ export const getPlan = async ({ contry, destination, days }: InputForm) => {
 
   const result = await openai.createCompletion({
     model: "text-davinci-003",
-    // model: "gpt-3.5-turbo",
     prompt: text,
     temperature: 1,
     max_tokens: 2048,
@@ -34,6 +37,29 @@ export const getPlan = async ({ contry, destination, days }: InputForm) => {
     frequency_penalty: 0,
     presence_penalty: 0,
   })
+  // const config = {
+  //   model: "gpt-3.5-turbo",
+  //   messages: [
+  //     {"role":"system", "content": `----foramt----\n{"DAY 1":[{"destination":"","latitude":"","longitude":""},{"destination":"","latitude":"","longitude":""},{"destination":"","latitude":"","longitude":""}]}"}`},
+  //     {"role":"user", "content": text}
+  //   ],
+  //   temperature: 1,
+  //   max_tokens: 2048,
+  //   top_p: 1,
+  //   frequency_penalty: 0,
+  //   presence_penalty: 0,
+  //   stream: false,
+  // };
+  // return fetch('https://api.openai.com/v1/completions', {
+  //   method: 'POST',
+  //   headers: {
+  //     Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
+  //     'Content-Type': 'application/json',
+  //     'Access-Control-Allow-Origin': '*',
+  //     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  //   },
+  //   body: JSON.stringify(config),
+  // })
 
   return new Promise((res, rej) => {
     let str = result.data.choices[0].text;
