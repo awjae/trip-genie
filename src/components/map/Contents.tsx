@@ -12,10 +12,7 @@ function Contents({ title, data, click }: ContentsType) {
   const [imageList, setImageList] = useState<any>([]);
 
   const itemClickHandler = (item: Destination, idx: number) => {
-    if (selectedList[idx].isActive) {
-      // setSelectedList(selectedList.map(el => ({...el, isActive: false})));
-      return
-    }
+    if (selectedList[idx].isActive) return
     setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
     click(item);
   };

@@ -36,8 +36,8 @@ const BlogContentsContainer = styled.div`
     display: flex;
     flex-wrap: nowrap;
     overflow: auto;
-    width: 342px;
     margin: 15px 0px 0px;
+    width: 100%;
     li {
       display: flex;
       justify-content: center;

@@ -7,7 +7,6 @@ function ImageContents({ data }: { data: any[] }) {
     isShow: false,
     url: "",
   });
-  console.log(data)
 
   return (
     <ImageContentsContainer>
@@ -46,7 +45,7 @@ const ImageContentsContainer = styled.section`
     display: flex;
     overflow: auto;
     padding-bottom: 10px;
-    width: 342px;
+    width: 100%;
     li {
       width: 105px;
       height: 80px;
