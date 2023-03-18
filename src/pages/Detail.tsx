@@ -111,6 +111,7 @@ function Detail() {
     setLeftNav(idx);
     setIsActiveRightContents(true);
     map.getLayers().getArray().filter((layer: any, idx: number) => idx > 0).filter((layer:any) => layer.get("name") !== `DAY ${idx + 1}`).forEach((layer: any) => layer.setOpacity(.3));
+    contentsClickHandler(data[Object.keys(data)[idx]][0]);
   }
 
   const contentsClickHandler = (item: any) => {

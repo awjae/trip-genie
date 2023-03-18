@@ -13,23 +13,33 @@ function Contents({ title, data, click }: ContentsType) {
 
   const itemClickHandler = (item: Destination, idx: number) => {
     if (selectedList[idx].isActive) {
-      setSelectedList(selectedList.map(el => ({...el, isActive: false})));
+      // setSelectedList(selectedList.map(el => ({...el, isActive: false})));
       return
     }
     setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
     click(item);
   };
   
-  const imageSearch = useMutation('searchImage', () => getSearchImage("제주도 성산일출봉"), {
+  const imageSearch = useMutation('searchImage', getSearchImage, {
     onSuccess(data, variables, context) {
       setImageList(data.items);
     },
   });
 
   useEffect(() => {
-    setSelectedList(data.map(item => ({...item, isActive: false })));
-    imageSearch.mutate();
+    setSelectedList(data.map((item, idx) => {
+      if (idx === 0) {
+        return {...item, isActive: true };
+      }
+      return {...item, isActive: false };
+    }));
   }, [data])
+
+  useEffect(() => {
+    const target = selectedList.find(item => item.isActive);
+    imageSearch.mutate({ query: target.detination });
+  }, [selectedList])
+  
 
   return (
     <ContentsContainer>

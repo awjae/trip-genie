@@ -106,7 +106,7 @@ const MOCK_DATA = {
 }
 
 export const getSearchImage = async (query : string) => {
-	return MOCK_IMAGE_DATA;
+	// return MOCK_IMAGE_DATA;
 	const options = {
     method: "POST",
     headers: {

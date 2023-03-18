@@ -27,16 +27,6 @@ function Home() {
   const setData = useDataStore((state: any) => state.setData);
   const [curtain, setCurtain] = useState(false);
 
-  const getPapagoText = useMutation('getPapagoText', (text: object) => getEngToKor(text), {
-    onSuccess(data, variables, context) {
-      setBotState({animationSteps: 2});
-      setData(data);
-    },
-    onError(error, variables, context) {
-        
-    },
-  });
-
   const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
     onSuccess(data: any, variables, context) {
       setBotState({animationSteps: 2});
@@ -59,12 +49,12 @@ function Home() {
   const getPlanAPIHandler = async () => {
     if (validationInputForm()) return;
     await playAnalyzeAnimation(); 
-    getPlanAPI.mutate();
+    // getPlanAPI.mutate();
     // getPapagoText.mutate({"test": "test"});
     // await new Promise((res, rej) => {
     //   setTimeout(() => {
-        // setBotState({animationSteps: 2}); 
-        // setData(MOCK_DATA);
+        setBotState({animationSteps: 2}); 
+        setData(MOCK_DATA);
     //     res(1);
     //   }, 5000)
     // });
