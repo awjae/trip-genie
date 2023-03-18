@@ -22,7 +22,7 @@ function Contents({ title, data, click }: ContentsType) {
   
   const imageSearch = useMutation('searchImage', getSearchImage, {
     onSuccess(data, variables, context) {
-      setImageList(data.items);
+      setImageList(JSON.parse(data).items);
     },
   });
 
@@ -37,7 +37,8 @@ function Contents({ title, data, click }: ContentsType) {
 
   useEffect(() => {
     const target = selectedList.find(item => item.isActive);
-    imageSearch.mutate({ query: target.detination });
+    if (!target || !target.destination) return
+    imageSearch.mutate(target.destination);
   }, [selectedList])
   
 
