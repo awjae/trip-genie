@@ -17,4 +17,5 @@ AI 여행 플래너
 - prompt engineering (JSON 포맷)
 - https://platform.openai.com/docs/guides/fine-tuning (추후 fine-tuning / 현재는 node 서버 요구됨)
 - fact checking 이 필요함
-- gpt-3.5-turbo 는 beta python 필요...
+- Deploy : Cloud Type
+- API : NAVER BLOG, NAVER IMAGE, chatGPT
