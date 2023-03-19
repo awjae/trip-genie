@@ -108,8 +108,8 @@ app.post('/searchImage', function (req, res) {
   });
 });
 
-app.listen(3010, () => {
-  console.log('http://127.0.0.1:3010/translate app listening on port 3010!');
+app.listen(3000, () => {
+  console.log('http://127.0.0.1:3000/translate app listening on port 3010!');
 });
 // app.get('/', function (req, res) {
 //   res.sendFile(__dirname + '/build/index.html')
