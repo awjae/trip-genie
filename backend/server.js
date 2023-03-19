@@ -4,12 +4,14 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const cors = require('cors');
 const MOCK_DATA = require('./data.ts');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use('/static', express.static(path.join(__dirname, '../build/static')));
 
 
 const PAPAGO_ID = process.env.REACT_APP_PAPAGO_ID_3;
@@ -109,8 +111,8 @@ app.post('/searchImage', function (req, res) {
 });
 
 app.listen(3000, () => {
-  console.log('http://127.0.0.1:300/translate app listening on port 3010!');
+  console.log('http://127.0.0.1:3000/translate app listening on port 3010!');
 });
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/build/index.html')
+  res.sendFile(path.join(__dirname, '../build/index.html'));
 })
