@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
-import React from 'react'
+import React, { useState } from 'react';
+import closeIcon from '@/images/close.png';
 
 function Board({ cardList }: { cardList: any[]; }) {
+  const [subBoard, setSubBoard] = useState(false);
+
   return (
     <BoardContainer>
       <div className='backrgound'>
@@ -14,8 +17,8 @@ function Board({ cardList }: { cardList: any[]; }) {
           )
         }
         <div className='cardListWrapper'>
-        { cardList && cardList.map((card, key) => {
-            return <Card key={key}>
+        { cardList && cardList.map((card, key) => (
+            <Card key={key} onClick={() => setSubBoard(true)}>
               <div className='background' style={{backgroundImage: `url(${(card.url)}`}}></div>
               <div className='info'>
                 <p>{card.contry}</p>
@@ -23,10 +26,13 @@ function Board({ cardList }: { cardList: any[]; }) {
                 <p>{card.days-1}박 {card.days}일</p>
               </div>
             </Card>
-          })
+          ))
         }
         </div>
       </div>
+      <SubBoard className={subBoard ? 'active' : ''}>
+        <span onClick={() => setSubBoard(false)}><img src={closeIcon} alt="닫기" width={18} height={19}/></span>
+      </SubBoard>
     </BoardContainer>
   )
 }
@@ -143,5 +149,27 @@ const Card = styled.article`
   }
   &:hover {
     transform: scale(1.05) translateZ(0);
+  }
+`;
+const SubBoard = styled.section`
+  position: fixed;
+  z-index: 1;
+  top: 50%;
+  left: -85vw;
+  transform: translateY(-50%);
+  background-color: #fff;
+  border-radius: 0 25px 25px 0;
+  width: 70%;
+  height: 80vh;
+  transition: left 1s;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+  &.active {
+    left: 0px;
+  }
+  span { 
+    position: absolute;
+    cursor: pointer;
+    right: 25px;
+    top: 25px;
   }
 `;

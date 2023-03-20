@@ -51,7 +51,7 @@ const InfoLayer = styled.div`
   &.active {
     right: 0px;
   }
-  img { 
+  span { 
     position: absolute;
     cursor: pointer;
     right: 5px;

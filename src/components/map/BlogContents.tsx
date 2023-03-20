@@ -35,8 +35,9 @@ const BlogContentsContainer = styled.div`
   ul {
     display: flex;
     flex-wrap: nowrap;
-    overflow: auto;
     margin: 15px 0px 0px;
+    padding-bottom: 10px;
+    overflow: auto;
     width: 100%;
     li {
       display: flex;
