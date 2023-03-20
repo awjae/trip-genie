@@ -12,6 +12,7 @@ import Bot from '@/components/Bot';
 import useDataStore from '@/store/dataStore';
 import useInputStore from '@/store/inputStore';
 import { getEngToKor } from '@/utils/papagoAPI';
+import Info from '@/components/Info';
 
 function Home() {
   const navigate = useNavigate();
@@ -123,6 +124,7 @@ function Home() {
             <Curtain></Curtain>
           )
         }
+      <Info></Info>
     </HomeContainer>
   );
 }
@@ -241,6 +243,7 @@ const Curtain = styled.div`
   background-color: #f0f0f0;
   transform: translateX(100%);
   animation: curtain 2s;
+  z-index: 2;
   @keyframes curtain {
     0% {
       transform: translateX(100%);
