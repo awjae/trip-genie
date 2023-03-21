@@ -61,10 +61,15 @@ function Contents({ title, data, click }: ContentsType) {
 
   const itemClickHandler = (item: Destination, idx: number) => {
     if (selectedList[idx].isActive) return
+    setReason("");
     currController.abort();
     const tempController = new AbortController();
     window.sessionStorage.setItem("isAbort", "true");
-    placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination, signal: tempController.signal });
+    if (placeReasonStore[item.destination]) {
+      setReason(placeReasonStore[item.destination]);
+    } else {
+      placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination, signal: tempController.signal });
+    }
     setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
     setCurrController(tempController);
     click(item);
