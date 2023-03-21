@@ -12,6 +12,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/static', express.static(path.join(__dirname, '../build/static')));
+app.use('/bot.png', express.static(path.join(__dirname, '../build/bot.png')));
+app.use('/manifest.json', express.static(path.join(__dirname, '../build/manifest.json')));
+app.use('/og_image.png', express.static(path.join(__dirname, '../build/og_image.png')));
 
 
 const PAPAGO_ID = process.env.REACT_APP_PAPAGO_ID_3;
