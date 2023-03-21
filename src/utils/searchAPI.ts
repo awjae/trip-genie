@@ -1,7 +1,11 @@
 import { MOCK_BLOG_DATA } from "@/assets/mock";
 
-const SEARCH_BLOG_PROXY_API_URL = '//localhost:3000/searchBlog';
-const SEARCH_IMAGE_PROXY_API_URL = '//localhost:3000/searchImage';
+let SEARCH_BLOG_PROXY_API_URL = './searchBlog';
+let SEARCH_IMAGE_PROXY_API_URL = './searchImage';
+if (process.env.NODE_ENV === "development") {
+	SEARCH_BLOG_PROXY_API_URL = '//localhost:3000/searchBlog';
+	SEARCH_IMAGE_PROXY_API_URL = '//localhost:3000/searchImage';
+}
 
 export const getSearchBlog = async (query : string) => {
 	if (process.env.NODE_ENV === "development") {

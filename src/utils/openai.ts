@@ -18,7 +18,7 @@ import { InputForm } from '@/types/input';
 //   return text;
 // }
 const makeText = ({ contry, destination, days }: InputForm) => {
-  let text = `${contry} ${destination} 주요 관광지 ${days}일 여행 일정을 JSON format으로 알려주세요.`
+  let text = `${contry} ${destination} 주요 관광지 ${days}일 여행 일정을 JSON format으로 데이터만 알려주세요.`
   return text;
 }
 export const getPlan = async ({ contry, destination, days }: InputForm) => {
@@ -65,7 +65,7 @@ export const getPlan = async ({ contry, destination, days }: InputForm) => {
     // let str = result.data.choices[0].text;
     let str = result.choices[0].message.content;
     if (!str) rej("데이터 불량");
-    str = str!.replaceAll("\n","").replaceAll("\\\"","\"").replaceAll("]}{","],").replaceAll("]{","],{").replaceAll("]},{","],").replaceAll("],{\"","],\"").replaceAll("}D","},D").replaceAll("]\"","],\"").replace("{ {", "{").replaceAll("\\'","\'");
+    str = str!.replaceAll("\n","").replaceAll("\\\"","\"").replaceAll("]}{","],").replaceAll("]{","],{").replaceAll("]},{","],").replaceAll("],{\"","],\"").replaceAll("}D","},D").replaceAll("]\"","],\"").replace("{ {", "{").replaceAll("\\'","\'").replace("{```{", "{").replace('}```"}',"}");
     if (str![str.length-1] === ".") {
       str = str.slice(0, -1);
     }
