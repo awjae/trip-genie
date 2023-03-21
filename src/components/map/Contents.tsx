@@ -17,15 +17,21 @@ function Contents({ title, data, click }: ContentsType) {
   const [reason, setReason] = useState("");
   const setPlaceReason = useMapStore((state: any) => state.setPlaceReason);
   const placeReasonStore = useMapStore((state: any) => state.placeReason);
+  const imageSearchCache = useMapStore((state: any) => state.imageSearchCache);
+  const setImageSearchCache = useMapStore((state: any) => state.setImageSearchCache);
+  const [currController, setCurrController] = useState(new AbortController());
   
   const imageSearch = useMutation('searchImage', getSearchImage, {
     onSuccess(data, variables, context) {
-      setImageList(JSON.parse(data).items);
+      const items = JSON.parse(data).items;
+      setImageSearchCache(variables, items);
+      setImageList(items);
     },
   });
   const placeReason = useMutation('placeReason', getPlaceReason, {
     onSuccess(data, variables, context) {
       if (!data || !data.body || !variables.place) return
+      window.sessionStorage.removeItem("isAbort");
       placeReasonAsyncFn(variables.place, data);
     },
   });
@@ -33,8 +39,14 @@ function Contents({ title, data, click }: ContentsType) {
     const reader = response.body.getReader();
     const decoder = new TextDecoder('utf-8');
     let result = '';
+    //call by value 로 인해 sesstion 처리
     while (true) {
       const { done, value } = await reader.read();
+      if (window.sessionStorage.getItem("isAbort")) {
+        setReason("");
+        window.sessionStorage.removeItem("isAbort");
+        break;
+      };
       if (done) break;
       const chunk = decoder.decode(value);
       const validate = chunk.split("\n").filter(item => item !== '').filter(item => item !== "data: [DONE]").map(el => JSON.parse(el.slice(6)))
@@ -49,7 +61,12 @@ function Contents({ title, data, click }: ContentsType) {
 
   const itemClickHandler = (item: Destination, idx: number) => {
     if (selectedList[idx].isActive) return
+    currController.abort();
+    const tempController = new AbortController();
+    window.sessionStorage.setItem("isAbort", "true");
+    placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination, signal: tempController.signal });
     setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
+    setCurrController(tempController);
     click(item);
   };
 
@@ -70,7 +87,11 @@ function Contents({ title, data, click }: ContentsType) {
   useEffect(() => {
     const target = selectedList.find(item => item.isActive);
     if (!target || !target.destination) return
-    imageSearch.mutate(target.destination);
+    if (imageSearchCache[target.destination]) {
+      setImageList(imageSearchCache[target.destination]);
+    } else {
+      imageSearch.mutate(target.destination);
+    }
   }, [selectedList])
   
   return (

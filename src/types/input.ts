@@ -4,4 +4,5 @@ export type InputForm = {
   days?: string;
   place?: string;
   animationSteps?: number;
+  signal?: any;
 }
