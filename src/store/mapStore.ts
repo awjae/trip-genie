@@ -5,6 +5,8 @@ const useMapStore = create((set) => ({
   setMap: (obj: Object) => set((state: any) => ({map: obj })),
   element: {},
   setElement: () => set((state: any) => ({element: state.element})),
+  placeReason: {},
+  setPlaceReason: (place: string, reason: string) => set((state: any) => ({ placeReason: { ...state.placeReason, [place]: reason }})),
 }))
 
 export default useMapStore;

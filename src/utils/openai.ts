@@ -93,7 +93,7 @@ export const getPlan = async ({ contry, destination, days }: InputForm) => {
 }
 
 const makePlaceText = ({ contry, destination, place }: InputForm) => {
-  let text = `${contry} ${destination}의 관광지 ${place}을 추천하는 이유를 간단하게 알려주세요.`;
+  let text = `${contry} ${destination}의 관광지 ${place}을 추천하는 이유를 간단하게 100자 이내로 알려주세요.`;
   return text;
 }
 export const getPlaceReason = async ({ contry, destination, place }: InputForm) => {

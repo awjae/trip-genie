@@ -8,12 +8,15 @@ import BlogContents from '@/components/map/BlogContents';
 import ImageContents from '@/components/ImageContents';
 import { getPlaceReason } from '@/utils/openai';
 import useInputStore from '@/store/inputStore';
+import useMapStore from '@/store/mapStore';
 
 function Contents({ title, data, click }: ContentsType) {
   const [selectedList, setSelectedList] = useState(data.map(item => ({...item, isActive: false })));
   const [imageList, setImageList] = useState<any>([]);
   const input = useInputStore((state: any) => state.input);
   const [reason, setReason] = useState("");
+  const setPlaceReason = useMapStore((state: any) => state.setPlaceReason);
+  const placeReasonStore = useMapStore((state: any) => state.placeReason);
   
   const imageSearch = useMutation('searchImage', getSearchImage, {
     onSuccess(data, variables, context) {
@@ -22,11 +25,11 @@ function Contents({ title, data, click }: ContentsType) {
   });
   const placeReason = useMutation('placeReason', getPlaceReason, {
     onSuccess(data, variables, context) {
-      if (!data || !data.body) return
-      placeReasonAsyncFn(data);
+      if (!data || !data.body || !variables.place) return
+      placeReasonAsyncFn(variables.place, data);
     },
   });
-  const placeReasonAsyncFn = async (response: any) => {
+  const placeReasonAsyncFn = async (place: string, response: any) => {
     const reader = response.body.getReader();
     const decoder = new TextDecoder('utf-8');
     let result = '';
@@ -41,20 +44,23 @@ function Contents({ title, data, click }: ContentsType) {
         setReason(result);
       }
     }
+    setPlaceReason(place, result);
   } 
 
   const itemClickHandler = (item: Destination, idx: number) => {
     if (selectedList[idx].isActive) return
     setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
-
-    console.log(item)
     click(item);
   };
 
   useEffect(() => {
     setSelectedList(data.map((item, idx) => {
       if (idx === 0) {
-        placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination })
+        if (placeReasonStore[item.destination]) {
+          setReason(placeReasonStore[item.destination]);
+        } else {
+          placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination });
+        }
         return {...item, isActive: true };
       }
       return {...item, isActive: false };
@@ -67,7 +73,6 @@ function Contents({ title, data, click }: ContentsType) {
     imageSearch.mutate(target.destination);
   }, [selectedList])
   
-
   return (
     <ContentsContainer>
       <header>{title + 1}일차!</header>
