@@ -31,6 +31,10 @@ function Contents({ title, data, click }: ContentsType) {
   const placeReason = useMutation('placeReason', getPlaceReason, {
     onSuccess(data, variables, context) {
       if (!data || !data.body || !variables.place) return
+      if (data.body === "development") {
+        setReason("개발자 모드 API 처리 : chatGPT");
+        return
+      }
       window.sessionStorage.removeItem("isAbort");
       placeReasonAsyncFn(variables.place, data);
     },
@@ -108,7 +112,6 @@ function Contents({ title, data, click }: ContentsType) {
             return (
               <li key={idx} onClick={() => itemClickHandler(item, idx)} className={item.isActive ? 'active' : ''}>
                 <h2>{item.destination}</h2>
-                {/* <p>{item.description}</p> */}
               </li>
             )
           })

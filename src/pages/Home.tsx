@@ -11,7 +11,6 @@ import { MOCK_CARDLIST, MOCK_DATA } from '@/assets/mock';
 import Bot from '@/components/Bot';
 import useDataStore from '@/store/dataStore';
 import useInputStore from '@/store/inputStore';
-import { getEngToKor } from '@/utils/papagoAPI';
 import Info from '@/components/Info';
 
 function Home() {
@@ -32,9 +31,6 @@ function Home() {
     onSuccess(data: any, variables, context) {
       setBotState({animationSteps: 2});
       setData(data.validateResponse);
-      // if (data.status === 200) {
-      // getPapagoText.mutate(data.validateResponse);
-      // }
     },
     onError(error, variables, context) {
       setBotState({animationSteps: 3});
@@ -50,15 +46,12 @@ function Home() {
   const getPlanAPIHandler = async () => {
     if (validationInputForm()) return;
     await playAnalyzeAnimation(); 
-    // getPlanAPI.mutate();
-    // getPapagoText.mutate({"test": "test"});
-    // await new Promise((res, rej) => {
-    //   setTimeout(() => {
-        setBotState({animationSteps: 2}); 
-        setData(MOCK_DATA);
-    //     res(1);
-    //   }, 5000)
-    // });
+    if (process.env.NODE_ENV === "development") {
+      setBotState({animationSteps: 2}); 
+      setData(MOCK_DATA);
+    } else {
+      getPlanAPI.mutate();
+    }
   } 
   const playAnalyzeAnimation = async () => {
     setInputForm({...inputForm, animationSteps: 1});

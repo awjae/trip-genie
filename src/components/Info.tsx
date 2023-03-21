@@ -13,6 +13,7 @@ function Info() {
       </div>
       <InfoLayer className={infoLayer ? 'active' : ''}>
         <span onClick={() => setInfoLayer(false)}><img src={closeIcon} alt="닫기" width={10} height={10}/></span>
+        <p>PC 환경에 최적화 되어있습니다.</p>
         <p>chatGPT의 '환상'현상이 나타날 수 있습니다.</p>
         <p>기타문의 : djwotmd@gmail.com</p>
       </InfoLayer>
@@ -45,6 +46,7 @@ const InfoLayer = styled.div`
   border-radius: 15px;
   background-color: #fff;
   padding: 15px 10px;
+  color: #292929;
   font-size: 13px;
   width: 240px;
   transition: right 1s cubic-bezier(.48,-0.69,.51,1.6);

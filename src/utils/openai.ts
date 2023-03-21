@@ -21,7 +21,6 @@ const makeText = ({ contry, destination, days }: InputForm) => {
   let text = `${contry} ${destination} 주요 관광지 ${days}일 여행 일정을 JSON format으로 알려주세요.`
   return text;
 }
-
 export const getPlan = async ({ contry, destination, days }: InputForm) => {
   if (!destination || !days) return
 
@@ -97,7 +96,11 @@ const makePlaceText = ({ contry, destination, place }: InputForm) => {
   return text;
 }
 export const getPlaceReason = async ({ contry, destination, place, signal }: InputForm) => {
-  
+  if (process.env.NODE_ENV === "development") {
+    return {
+      body: "development"
+    };
+  }
   const text = makePlaceText({contry, destination, place});
   const config = {
     model: "gpt-3.5-turbo",

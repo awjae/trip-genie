@@ -1,21 +1,24 @@
 import { MOCK_BLOG_DATA } from '@/assets/mock';
+import { getSearchBlog } from '@/utils/searchAPI';
 import styled from '@emotion/styled';
 import React, { useState } from 'react'
+import { useQuery } from 'react-query';
 
 function BlogContents() {
-  // useQuery("searchBlog", () => getSearchBlog("제주도"), {
-  //   onSuccess(data) {
-  //       console.log(JSON.stringify(data.items));
-  //   },
-  // })
-  const [blogData, setBlogData] = useState(MOCK_BLOG_DATA);
+  // const [blogData, setBlogData] = useState(MOCK_BLOG_DATA);
+  const [blogData, setBlogData] = useState([]);
+  useQuery("searchBlog", () => getSearchBlog("제주도"), {
+    onSuccess(data) {
+      setBlogData(JSON.parse(data).items);
+    },
+  });
 
   return (
     <BlogContentsContainer>
       <h2>추천 블로그...</h2>
       <ul>
         {
-          blogData.length > 0 && blogData.map((blog, idx) => (
+          blogData.length > 0 && blogData.map((blog: any, idx) => (
             <li key={idx} onClick={() => window.open(blog.link)}>
               <span dangerouslySetInnerHTML={{ __html: blog.title}}></span>
             </li>

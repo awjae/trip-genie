@@ -3,22 +3,19 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Map, View, Feature, Overlay } from 'ol';
 import { Tile } from 'ol/layer';
 import { OSM } from 'ol/source';
-import { fromLonLat, get, Projection } from 'ol/proj';
+import { get, Projection } from 'ol/proj';
 import 'ol/ol.css';
 import useMapStore from '@/store/mapStore';
 import useDataStore from '@/store/dataStore';
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
 import mapPointIcon from '@/images/map-point.png';
-import { Destination, MapData } from '@/types/map';
+import { Destination } from '@/types/map';
 import { Geometry, Point } from 'ol/geom';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import Contents from '@/components/map/Contents';
-import { useQuery } from 'react-query';
-import { getSearchBlog } from '@/utils/searchAPI';
-import BlogContents from '@/components/map/BlogContents';
-import { MOCK_BLOG_DATA } from '@/assets/mock';
+import { useNavigate } from 'react-router-dom';
 
 function Detail() {
   const map = useMapStore((state: any) => state.map);
@@ -26,6 +23,7 @@ function Detail() {
   const data = useDataStore((state: any) => state.data);
   const [leftNav, setLeftNav] = useState<number>();
   const [isActiveRightContents, setIsActiveRightContents] = useState(false);
+  const navigate = useNavigate();
   const [mapPopover, setMapPopover] = useState({
     popup: {},
     isShow: false,
@@ -133,6 +131,11 @@ function Detail() {
   }
  
   useEffect(() => {
+    if (!isActiveRightContents && Object.keys(data).length === 0) {
+      navigate('/');
+      return
+    }
+
     const temp = new Map({
       layers: [
         new Tile({
@@ -166,7 +169,7 @@ function Detail() {
           <Contents title={leftNav} data={data[Object.keys(data)[leftNav]]} click={contentsClickHandler}></Contents>
         )}
       </MapWrapper>
-      <div id="mapPopup" style={{ left: mapPopover.left - 82, top: mapPopover.top - 122 }} className={String(mapPopover.isShow)}>
+      <div id="mapPopup" style={{ left: mapPopover.left - 107, top: mapPopover.top - 122 }} className={String(mapPopover.isShow)}>
         <span>
           <em>{mapPopover.title}</em><br></br>
           {mapPopover.content}
@@ -194,6 +197,7 @@ function Detail() {
 export default Detail;
 
 const DetailContainer = styled.main`
+  min-width: 800px;
   width: 100vw;
   height: 100vh;
   background-color: #f0f0f0;
@@ -203,7 +207,7 @@ const DetailContainer = styled.main`
     align-items: center;
     justify-content: center;
     border-radius: 20px;
-    width: 130px;
+    width: 180px;
     height: 50px;
     padding: 16px;
     background-color: #efefef;
