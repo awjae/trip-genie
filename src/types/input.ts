@@ -1,6 +1,7 @@
 export type InputForm = {
   contry: string;
   destination: string;
-  days: string;
+  days?: string;
+  place?: string;
   animationSteps?: number;
 }

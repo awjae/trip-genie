@@ -58,6 +58,8 @@ export const getPlan = async ({ contry, destination, days }: InputForm) => {
     body: JSON.stringify(config),
   }).then((data) => {
     return data.json();
+  }).catch((err) => {
+    return err;
   })
 
   return new Promise((res, rej) => {
@@ -87,5 +89,35 @@ export const getPlan = async ({ contry, destination, days }: InputForm) => {
       console.log(str);
       rej(false);
     }
+  })
+}
+
+const makePlaceText = ({ contry, destination, place }: InputForm) => {
+  let text = `${contry} ${destination}의 관광지 ${place}을 추천하는 이유를 간단하게 알려주세요.`;
+  return text;
+}
+export const getPlaceReason = async ({ contry, destination, place }: InputForm) => {
+  
+  const text = makePlaceText({contry, destination, place});
+  const config = {
+    model: "gpt-3.5-turbo",
+    messages: [
+      {"role": "system", "content": "You are travel planner"},
+      {"role":"user", "content": text}
+    ],
+    temperature: .5,
+    max_tokens: 1024,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+    stream: true,
+  };
+  return await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(config),
   })
 }

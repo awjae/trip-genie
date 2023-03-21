@@ -6,26 +6,55 @@ import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import BlogContents from '@/components/map/BlogContents';
 import ImageContents from '@/components/ImageContents';
+import { getPlaceReason } from '@/utils/openai';
+import useInputStore from '@/store/inputStore';
 
 function Contents({ title, data, click }: ContentsType) {
   const [selectedList, setSelectedList] = useState(data.map(item => ({...item, isActive: false })));
   const [imageList, setImageList] = useState<any>([]);
-
-  const itemClickHandler = (item: Destination, idx: number) => {
-    if (selectedList[idx].isActive) return
-    setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
-    click(item);
-  };
+  const input = useInputStore((state: any) => state.input);
+  const [reason, setReason] = useState("");
   
   const imageSearch = useMutation('searchImage', getSearchImage, {
     onSuccess(data, variables, context) {
       setImageList(JSON.parse(data).items);
     },
   });
+  const placeReason = useMutation('placeReason', getPlaceReason, {
+    onSuccess(data, variables, context) {
+      if (!data || !data.body) return
+      placeReasonAsyncFn(data);
+    },
+  });
+  const placeReasonAsyncFn = async (response: any) => {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let result = '';
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const chunk = decoder.decode(value);
+      const validate = chunk.split("\n").filter(item => item !== '').filter(item => item !== "data: [DONE]").map(el => JSON.parse(el.slice(6)))
+      .filter(json => json?.choices[0].delta.content).map(json => json.choices[0].delta.content);
+      if (validate[0]) {
+        result += validate[0];
+        setReason(result);
+      }
+    }
+  } 
+
+  const itemClickHandler = (item: Destination, idx: number) => {
+    if (selectedList[idx].isActive) return
+    setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
+
+    console.log(item)
+    click(item);
+  };
 
   useEffect(() => {
     setSelectedList(data.map((item, idx) => {
       if (idx === 0) {
+        placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination })
         return {...item, isActive: true };
       }
       return {...item, isActive: false };
@@ -54,6 +83,9 @@ function Contents({ title, data, click }: ContentsType) {
           })
         }
       </SelectedListWrapper>
+      <TextArea>
+        {reason}
+      </TextArea>
       {
         imageList.length > 0 && (
           <ImageContents data={imageList}></ImageContents>
@@ -116,4 +148,10 @@ const SelectedListWrapper = styled.ul`
       text-align: center;
     }
   }
+`;
+
+const TextArea = styled.div`
+  margin-bottom: 20px;
+  font-size: 16px;
+  line-height: 1.4;
 `;

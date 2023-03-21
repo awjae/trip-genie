@@ -255,6 +255,7 @@ const MapWrapper = styled.section`
 
 const LeftNav = styled.nav`
   position: fixed;
+  margin-left: 30px;
   top: 50%;
   left: 0px;
   transform: translateY(-50%);
