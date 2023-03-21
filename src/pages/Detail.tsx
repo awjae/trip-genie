@@ -10,12 +10,13 @@ import useDataStore from '@/store/dataStore';
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
 import mapPointIcon from '@/images/map-point.png';
+import homeIcon from '@/images/home.png';
 import { Destination } from '@/types/map';
 import { Geometry, Point } from 'ol/geom';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import Contents from '@/components/map/Contents';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Detail() {
   const map = useMapStore((state: any) => state.map);
@@ -146,7 +147,7 @@ function Detail() {
       view: new View({
         projection: get('EPSG:4326') as Projection,
         center: [126.936743, 37.486479],
-        zoom: 10
+        zoom: 12
       }),
     })
     setMap(temp);
@@ -168,6 +169,9 @@ function Detail() {
         { isActiveRightContents && leftNav !== undefined && (
           <Contents title={leftNav} data={data[Object.keys(data)[leftNav]]} click={contentsClickHandler}></Contents>
         )}
+        <Link to={'/'} className='home'>
+          <img src={homeIcon} alt="홈으로" />
+        </Link>
       </MapWrapper>
       <div id="mapPopup" style={{ left: mapPopover.left - 107, top: mapPopover.top - 122 }} className={String(mapPopover.isShow)}>
         <span>
@@ -254,6 +258,22 @@ const MapWrapper = styled.section`
   #map {
     width: 100%;
     height: 100%;
+  }
+  .home {
+    position: fixed;
+    left: 25px;
+    bottom: 25px;
+    border-radius: 50%;
+    padding: 10px;
+    background-color: #fff;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 `;
 

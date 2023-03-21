@@ -117,3 +117,6 @@ app.listen(3000, () => {
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 })
+app.get('/detail', function (req, res) {
+  res.sendFile(path.join(__dirname, '../build/index.html'));
+})
