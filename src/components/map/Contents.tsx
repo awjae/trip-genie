@@ -10,7 +10,7 @@ import { getPlaceReason } from '@/utils/openai';
 import useInputStore from '@/store/inputStore';
 import useMapStore from '@/store/mapStore';
 
-function Contents({ title, data, click }: ContentsType) {
+function Contents({ title, data, click, setImageViewer }: ContentsType) {
   const [selectedList, setSelectedList] = useState(data.map(item => ({...item, isActive: false })));
   const [imageList, setImageList] = useState<any>([]);
   const input = useInputStore((state: any) => state.input);
@@ -20,7 +20,7 @@ function Contents({ title, data, click }: ContentsType) {
   const imageSearchCache = useMapStore((state: any) => state.imageSearchCache);
   const setImageSearchCache = useMapStore((state: any) => state.setImageSearchCache);
   const [currController, setCurrController] = useState(new AbortController());
-  
+
   const imageSearch = useMutation('searchImage', getSearchImage, {
     onSuccess(data, variables, context) {
       const items = JSON.parse(data).items;
@@ -122,7 +122,7 @@ function Contents({ title, data, click }: ContentsType) {
       </TextArea>
       {
         imageList.length > 0 && (
-          <ImageContents data={imageList}></ImageContents>
+          <ImageContents data={imageList} setImageViewer={setImageViewer}></ImageContents>
         )
       }
       <BlogContents></BlogContents>
@@ -155,6 +155,17 @@ const ContentsContainer = styled.section`
     font-size: 32px;
     box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
   }
+  @media (max-width: 800px) {
+    width: calc(100vw - 40px);
+    background-color: #fff;
+    height: 80vh;
+    min-height: 350px;
+    box-shadow: rgb(0 0 0 / 24%) 0px -5px 8px;
+    padding-top: 5px;
+    header {
+      display: none;
+    }
+  }
 `;
 
 const SelectedListWrapper = styled.ul`
@@ -181,6 +192,13 @@ const SelectedListWrapper = styled.ul`
       overflow: hidden;
       text-align: center;
     }
+    @media (max-width: 800px) {
+      width: 25%;
+      height: 30px;
+      h2 {
+        font-size: 14px;
+      }
+    }
   }
 `;
 
@@ -188,4 +206,7 @@ const TextArea = styled.div`
   margin-bottom: 20px;
   font-size: 16px;
   line-height: 1.4;
+  @media (max-width: 800px) {
+    font-size: 12px;
+  }
 `;

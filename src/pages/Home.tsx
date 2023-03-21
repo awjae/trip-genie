@@ -198,6 +198,9 @@ const Main = styled.main`
     bottom: 250px;
     transition: all 1s cubic-bezier(.71,-0.3,.83,.95);
   }
+  @media (max-width: 800px) {
+    width: 80vw;
+  }
 `;
 const Form = styled.div`
   display: flex; 

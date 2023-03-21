@@ -91,7 +91,7 @@ const BoardContainer = styled.section`
     h1 {
       margin: 20px;
       color: #e8e8e8;
-      font-size: 36px;
+      font-size: 1.5rem;
     }  
     .cardListWrapper {
       display: flex;
@@ -104,7 +104,20 @@ const BoardContainer = styled.section`
       &:hover article:not(:hover) .background:not(:hover) {
         filter: brightness(0.5) saturate(0) contrast(1) blur(10px);
       }
+      @media (max-width: 800px) {
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: initial;
+        min-height: 240px;
+        &:hover article:not(:hover) .background:not(:hover) {
+          filter: initial;
+        }
+      }
     }
+  }
+  @media (max-width: 800px) {
+    height: 50vh;
+    min-height: 340px;
   }
 `;
 const Card = styled.article`
@@ -161,6 +174,17 @@ const Card = styled.article`
   &:hover {
     transform: scale(1.05) translateZ(0);
   }
+  @media (max-width: 800px) {
+    width: 42vw;
+    height: 15vh;
+    min-height: 100px;
+    line-height: 1;
+    padding: 15px;
+    margin-bottom: 20px;
+    &:hover {
+      transform: initial;
+    }
+  }
 `;
 const SubBoard = styled.section`
   position: fixed;
@@ -190,8 +214,15 @@ const SubBoard = styled.section`
     width: 100%;
     height: 100%;
     img {
-      width: 80%;
-      height: 80%;
+      width: 95%;
+      height: 95%;
+      object-fit: contain;
     }
+  }
+  @media (max-width: 800px) {
+    width: 100vw;
+    height: 60vh;
+    min-height: 420px;
+    left: -100vw;
   }
 `;

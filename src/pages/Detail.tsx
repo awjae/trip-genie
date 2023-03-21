@@ -17,6 +17,8 @@ import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import Contents from '@/components/map/Contents';
 import { Link, useNavigate } from 'react-router-dom';
+import ImageViwer from '@/components/ImageViewer';
+import { appHeight } from '@/utils/utils';
 
 function Detail() {
   const map = useMapStore((state: any) => state.map);
@@ -36,7 +38,11 @@ function Detail() {
   const mapPopupRef = useRef<HTMLInputElement>(null);
   const moveStartFn = useCallback(() => {
     setMapPopover({...mapPopover, isShow: false});
-  }, [])
+  }, []);
+  const [imageViewer, setImageViewer] = useState({
+    isShow: false,
+    url: "",
+  });
 
   const setPointLayer = (data: any) => {
     if (Object.keys(data).length < 1) return
@@ -121,13 +127,15 @@ function Detail() {
       center: [Number(item.longitude), Number(item.latitude)],
       duration: 500,
     }, () => {
-      const pixel = map.getPixelFromCoordinate([Number(item.longitude), Number(item.latitude)]);
-      pixel[1] -= 15;
-      map.dispatchEvent({
-        type: 'click',
-        pixel: pixel,
-      });
-      map.addEventListener('movestart', moveStartFn);
+      setTimeout(() => {
+        const pixel = map.getPixelFromCoordinate([Number(item.longitude), Number(item.latitude)]);
+        pixel[1] -= 15;
+        map.dispatchEvent({
+          type: 'click',
+          pixel: pixel,
+        });
+        map.addEventListener('movestart', moveStartFn);
+      }, 100)
     });
   }
  
@@ -136,7 +144,6 @@ function Detail() {
       navigate('/');
       return
     }
-
     const temp = new Map({
       layers: [
         new Tile({
@@ -151,7 +158,14 @@ function Detail() {
       }),
     })
     setMap(temp);
-    return () => temp.setTarget(undefined);
+
+    appHeight();
+    window.addEventListener("resize", appHeight);
+    
+    return () => {
+      temp.setTarget(undefined)
+      window.removeEventListener("resize", appHeight);
+    };
   }, []);
   
   useEffect(() => {
@@ -167,7 +181,7 @@ function Detail() {
       <MapWrapper>
         <div id="map"></div>
         { isActiveRightContents && leftNav !== undefined && (
-          <Contents title={leftNav} data={data[Object.keys(data)[leftNav]]} click={contentsClickHandler}></Contents>
+          <Contents title={leftNav} data={data[Object.keys(data)[leftNav]]} click={contentsClickHandler} setImageViewer={setImageViewer}></Contents>
         )}
         <Link to={'/'} className='home'>
           <img src={homeIcon} alt="홈으로" />
@@ -194,6 +208,11 @@ function Detail() {
           </LeftNav>
         )
       }
+      {
+        imageViewer.isShow && (
+          <ImageViwer url={imageViewer.url} close={() => setImageViewer({ ...imageViewer, isShow: false })}></ImageViwer>
+        )
+      }
     </DetailContainer>
   )
 }
@@ -203,7 +222,7 @@ export default Detail;
 const DetailContainer = styled.main`
   min-width: 800px;
   width: 100vw;
-  height: 100vh;
+  height: var(--vh); 
   background-color: #f0f0f0;
   #mapPopup {
     position: absolute;
@@ -249,6 +268,10 @@ const DetailContainer = styled.main`
       display: flex;
     }
   } 
+  @media (max-width: 800px) {
+    width: 100vw;
+    min-width: initial;
+  }
 `;
 
 const MapWrapper = styled.section`
@@ -274,6 +297,15 @@ const MapWrapper = styled.section`
       width: 100%;
       height: 100%;
     }
+    @media (max-width: 800px) { 
+      left: initial;
+      bottom: initial;
+      right: 15px;
+      top: 15px;
+    }
+  }
+  @media (max-width: 800px) {
+    flex-direction: column;
   }
 `;
 
@@ -299,6 +331,16 @@ const LeftNav = styled.nav`
     }
     &:not(:last-child) {
       margin-bottom: 20px;
+    }
+  }
+  @media (max-width: 800px) {
+    margin-left: 0;
+    li {
+      width: 50px;
+      border-radius: 0 10px 10px 0;
+      &:not(:last-child) {
+        margin-bottom: 5px;
+      }
     }
   }
 `;

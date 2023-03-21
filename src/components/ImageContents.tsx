@@ -2,11 +2,7 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import ImageViwer from '@/components/ImageViewer';
 
-function ImageContents({ data }: { data: any[] }) {
-  const [imageViewer, setImageViewer] = useState({
-    isShow: false,
-    url: "",
-  });
+function ImageContents({ data, setImageViewer }: { data: any[]; setImageViewer: any; }) {
 
   return (
     <ImageContentsContainer>
@@ -22,11 +18,6 @@ function ImageContents({ data }: { data: any[] }) {
         ))
       }
       </ul>
-      {
-        imageViewer.isShow && (
-          <ImageViwer url={imageViewer.url} close={() => setImageViewer({ ...imageViewer, isShow: false })}></ImageViwer>
-        )
-      }
     </ImageContentsContainer>
   )
 }
@@ -39,7 +30,11 @@ const ImageContentsContainer = styled.section`
       border-radius: 15px;
       width: 100%;
       max-height: 350px;
+      object-fit: cover;
       cursor: pointer;
+      @media (max-width: 800px) {
+        max-height: 150px;
+      }
     }
   }
   ul {

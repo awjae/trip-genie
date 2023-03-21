@@ -81,4 +81,11 @@ const BotIconContainer = styled.div`
       bottom: -30px;
     }
   }
+  @media (max-width: 800px) {
+    animation: none;
+    &.bounce span::after, &.analyze span::after {
+      left: -80px;
+      bottom: 30px;
+    }
+  }
 `;
