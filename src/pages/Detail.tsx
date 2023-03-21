@@ -137,6 +137,19 @@ function Detail() {
         map.addEventListener('movestart', moveStartFn);
       }, 100)
     });
+  };
+  const setMapPopCoor = (type: string) => {
+    if (type === "left") {
+      let left = 0;
+      window.innerWidth > 800 ? left = 107 : left = 63;
+      return left
+    }
+    if (type === "top") {
+      let top = 0;
+      window.innerWidth > 800 ? top = 122 : top = 93;
+      return top
+    }
+    return 115
   }
  
   useEffect(() => {
@@ -187,10 +200,10 @@ function Detail() {
           <img src={homeIcon} alt="홈으로" />
         </Link>
       </MapWrapper>
-      <div id="mapPopup" style={{ left: mapPopover.left - 107, top: mapPopover.top - 122 }} className={String(mapPopover.isShow)}>
+      <div id="mapPopup" style={{ left: mapPopover.left - setMapPopCoor('left'), top: mapPopover.top - setMapPopCoor('top') }} className={String(mapPopover.isShow)}>
         <span>
-          <em>{mapPopover.title}</em><br></br>
-          {mapPopover.content}
+          {mapPopover.title}
+          {/* {mapPopover.content} */}
         </span>
       </div>
       {
@@ -241,14 +254,11 @@ const DetailContainer = styled.main`
     box-shadow: 0 4px 10px 0 rgb(0 0 0 / 40%);
     span {
       white-space: pre-wrap;
-      font-size: 14px;
       word-break: keep-all;
-      em {
-        font-family: 'IM-Bold';
-        font-size: 20px;
-        font-style: normal;
-        word-break: keep-all;
-      }
+      font-family: 'IM-Bold';
+      font-size: 20px;
+      font-style: normal;
+      word-break: keep-all;
     }
     &:after {
       display: block;
@@ -267,6 +277,13 @@ const DetailContainer = styled.main`
     &.true {
       display: flex;
     }
+    @media (max-width: 800px) {
+      width: 90px;
+      height: 20px;
+      span {
+        font-size: 14px;
+      }
+    }  
   } 
   @media (max-width: 800px) {
     width: 100vw;
@@ -337,9 +354,11 @@ const LeftNav = styled.nav`
     margin-left: 0;
     li {
       width: 50px;
+      height: 35px;
+      font-size: 14px;
       border-radius: 0 10px 10px 0;
       &:not(:last-child) {
-        margin-bottom: 5px;
+        margin-bottom: 10px;
       }
     }
   }
