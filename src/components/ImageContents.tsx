@@ -38,6 +38,7 @@ const ImageContentsContainer = styled.section`
     img {
       border-radius: 15px;
       width: 100%;
+      max-height: 350px;
       cursor: pointer;
     }
   }

@@ -1,9 +1,19 @@
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import closeIcon from '@/images/close.png';
+import staticImage_1 from '@/images/staticImage_1.png';
+import staticImage_2 from '@/images/staticImage_2.png';
+import staticImage_3 from '@/images/staticImage_3.png';
+import staticImage_4 from '@/images/staticImage_4.png';
 
 function Board({ cardList }: { cardList: any[]; }) {
   const [subBoard, setSubBoard] = useState(false);
+  const [staticExample, setStaticExample] = useState<string>();
+  const staticImage = [staticImage_1, staticImage_2, staticImage_3, staticImage_4];
+  const cardClickHanlder = (idx: number) => {
+    setSubBoard(true);
+    setStaticExample(staticImage[idx]);
+  }
 
   return (
     <BoardContainer>
@@ -18,7 +28,7 @@ function Board({ cardList }: { cardList: any[]; }) {
         }
         <div className='cardListWrapper'>
         { cardList && cardList.map((card, key) => (
-            <Card key={key} onClick={() => setSubBoard(true)}>
+            <Card key={key} onClick={() => cardClickHanlder(key)}>
               <div className='background' style={{backgroundImage: `url(${(card.url)}`}}></div>
               <div className='info'>
                 <p>{card.contry}</p>
@@ -32,6 +42,7 @@ function Board({ cardList }: { cardList: any[]; }) {
       </div>
       <SubBoard className={subBoard ? 'active' : ''}>
         <span onClick={() => setSubBoard(false)}><img src={closeIcon} alt="닫기" width={18} height={19}/></span>
+        <div className='staticImageWrapper'><img src={staticExample} alt="예시 이미지" /></div>
       </SubBoard>
     </BoardContainer>
   )
@@ -171,5 +182,16 @@ const SubBoard = styled.section`
     cursor: pointer;
     right: 25px;
     top: 25px;
+  }
+  .staticImageWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    img {
+      width: 80%;
+      height: 80%;
+    }
   }
 `;
