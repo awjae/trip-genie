@@ -33,7 +33,7 @@
   "scripts": {
     "backend": "node backend/server.js",
     "start": "craco start",
-    "build": "craco build",
+    "build": "craco build set NODE_ENV=production",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
