@@ -15,18 +15,18 @@ import Info from '@/components/Info';
 
 function Home() {
   const navigate = useNavigate();
-  // const [inputForm, setInputForm] = useState<InputForm>({
-  //   contry: "",
-  //   destination: "",
-  //   days: "",
-  //   animationSteps: 0,
-  // });
   const [inputForm, setInputForm] = useState<InputForm>({
-    contry: "대한민국",
-    destination: "제주도",
-    days: "4",
+    contry: "",
+    destination: "",
+    days: "",
     animationSteps: 0,
   });
+  // const [inputForm, setInputForm] = useState<InputForm>({
+  //   contry: "대한민국",
+  //   destination: "제주도",
+  //   days: "4",
+  //   animationSteps: 0,
+  // });
   const [botState, setBotState] = useState({animationSteps: 0});
   const [defaultCardList, setDefaultCardList] = useState<any[]>();
   const setInput = useInputStore((state: any) => state.setInput);

@@ -1,13 +1,15 @@
 import { MOCK_BLOG_DATA } from '@/assets/mock';
 import { getSearchBlog } from '@/utils/searchAPI';
 import styled from '@emotion/styled';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
+import useInputStore from '@/store/inputStore';
 
 function BlogContents() {
   // const [blogData, setBlogData] = useState(MOCK_BLOG_DATA);
+  const input = useInputStore((state: any) => state.input);
   const [blogData, setBlogData] = useState([]);
-  useQuery("searchBlog", () => getSearchBlog("제주도"), {
+  useQuery("searchBlog", () => getSearchBlog(`${input.contry} ${input.destination}`), {
     onSuccess(data) {
       setBlogData(JSON.parse(data).items);
     },
