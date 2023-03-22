@@ -105,6 +105,7 @@ function Home() {
       <img src={airplane} alt="" />
       <img src={hatchback} alt="" />
         <Main className={FormAnimationStepHanlder()}>
+          <h1>트립지니 - AI 여행플래너</h1>
           <Form className='inputForm'>
             <input type="text" placeholder='어느 나라?' value={inputForm.contry} onChange={(e) => setInputForm({...inputForm, contry: e.target.value})}/>
             <input type="text" placeholder='어느 지역?' value={inputForm.destination} onChange={(e) => setInputForm({...inputForm, destination: e.target.value})}/>
@@ -189,6 +190,15 @@ const Main = styled.main`
   right: 50%;
   bottom: 50%;
   transform: translate(50%, 50%);
+  h1 {
+    display: inline-block;
+    margin: 0 0 5px 0;
+    padding: 1px 4px;
+    color: #25353d;
+    border: 2px solid #00bcd4;
+    border-radius: 8px;
+    font-size: 20px;
+  }
   &.scaledown .inputForm {
     scale: 0;
     opacity: 0;
