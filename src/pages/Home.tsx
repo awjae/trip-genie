@@ -105,12 +105,12 @@ function Home() {
       <img src={airplane} alt="" />
       <img src={hatchback} alt="" />
         <Main className={FormAnimationStepHanlder()}>
-          <h1>트립지니 - AI 여행플래너</h1>
           <Form className='inputForm'>
+            <h1>트립지니 - AI 여행플래너</h1>
             <input type="text" placeholder='어느 나라?' value={inputForm.contry} onChange={(e) => setInputForm({...inputForm, contry: e.target.value})}/>
             <input type="text" placeholder='어느 지역?' value={inputForm.destination} onChange={(e) => setInputForm({...inputForm, destination: e.target.value})}/>
             <input type="number" placeholder='몇 일?' value={inputForm.days} onChange={(e) => setInputForm({...inputForm, days: e.target.value})}/>
-            <button onClick={getPlanAPIHandler}>해줘!</button>
+            <button onClick={getPlanAPIHandler}>완료!</button>
           </Form>
           <Bot animationSteps={botState.animationSteps} goDetail={goDetail}></Bot>
         </Main>
@@ -190,15 +190,7 @@ const Main = styled.main`
   right: 50%;
   bottom: 50%;
   transform: translate(50%, 50%);
-  h1 {
-    display: inline-block;
-    margin: 0 0 5px 0;
-    padding: 1px 4px;
-    color: #25353d;
-    border: 2px solid #00bcd4;
-    border-radius: 8px;
-    font-size: 20px;
-  }
+  
   &.scaledown .inputForm {
     scale: 0;
     opacity: 0;
@@ -222,6 +214,18 @@ const Form = styled.div`
               -22px -22px 43px #ffffff;
   transition: all 0.5s ease-in;
   transform-origin: bottom right;
+  h1 {
+    position: absolute;
+    left: 0px;
+    top: -30px;
+    display: inline-block;
+    padding: 1px 4px;
+    color: #25353d;
+    background-color: #fafafa;
+    border: 2px solid #00bcd4;
+    border-radius: 8px;
+    font-size: 20px;
+  }
   input {
     padding: 15px;
     border: 1px solid #e8e8e8;
@@ -240,7 +244,8 @@ const Form = styled.div`
     border: 1px solid #e8e8e8;
     cursor: pointer;
     &:hover {
-      background-color: #607d8b;
+      background-color: #00bcd4;
+      color: #fff;
     }
   }
   *:not(:last-child) {
