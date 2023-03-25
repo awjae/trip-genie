@@ -16,7 +16,7 @@ function ImageViewer({ url, close }: { url: string; close: Function; }) {
       </span>
       <Dimmed onClick={() => close()}></Dimmed>
       <div className='imageWrapper'>
-        <img src={'https://post.phinf.naver.net/MjAxNzExMDhfMTM3/MDAxNTEwMTE1MDgwMDc2.PMfVrhU6lRBBH3d6VeZhixke1bEVoZn0Ewopx5jBIiEg.f9OMK3LkduWxwrdxDUNFiK9X7KBw8MFPHYw0IVL8eRIg.JPEG/IY4rv6LgLpXi08_EROZ0nwU44U9A.jpg'} referrerPolicy="no-referrer" alt="" onError={defaultImg}/>
+        <img src={url} referrerPolicy="no-referrer" alt="" onError={defaultImg}/>
       </div>
     </ImageViewerContainer>
   )
