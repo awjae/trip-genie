@@ -1,8 +1,14 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import closeIcon from '@/images/close.png';
+import iconNoImage from '@/images/no-photo.png';
 
 function ImageViewer({ url, close }: { url: string; close: Function; }) {
+
+  const defaultImg = (e: any) => {
+    e.target.src = iconNoImage;
+  }
+
   return (
     <ImageViewerContainer>
       <span className='closeIcon' onClick={() => close()}>
@@ -10,7 +16,7 @@ function ImageViewer({ url, close }: { url: string; close: Function; }) {
       </span>
       <Dimmed onClick={() => close()}></Dimmed>
       <div className='imageWrapper'>
-        <img src={url} referrerPolicy="no-referrer" alt="" />
+        <img src={'https://post.phinf.naver.net/MjAxNzExMDhfMTM3/MDAxNTEwMTE1MDgwMDc2.PMfVrhU6lRBBH3d6VeZhixke1bEVoZn0Ewopx5jBIiEg.f9OMK3LkduWxwrdxDUNFiK9X7KBw8MFPHYw0IVL8eRIg.JPEG/IY4rv6LgLpXi08_EROZ0nwU44U9A.jpg'} referrerPolicy="no-referrer" alt="" onError={defaultImg}/>
       </div>
     </ImageViewerContainer>
   )
