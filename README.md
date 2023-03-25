@@ -19,3 +19,6 @@ AI 여행 플래너
 - fact checking 이 필요함
 - Deploy : Cloud Type
 - API : NAVER BLOG, NAVER IMAGE, chatGPT
+
+# build 팁
+- .env : GENERATE_SOURCEMAP=false (소스트리맵 없애고 싶을때)

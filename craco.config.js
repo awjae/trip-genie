@@ -10,4 +10,17 @@ module.exports = {
       },
     },
   ],
+//   webpack: {
+//     configure: {
+//       output: {
+//         filename: 'tripGenie.min.js',
+//       },
+//     },
+//     plugins: [
+//       new MiniCssExtractPlugin({
+//         filename: 'tripGenie.min.css',
+//         chunkFilename: 'tripGenie.min.chunk.css',
+//       }),
+//     ]
+//   }
 } 
