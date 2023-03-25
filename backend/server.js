@@ -114,9 +114,15 @@ app.post('/searchImage', function (req, res) {
 app.listen(3000, () => {
   console.log('http://127.0.0.1:3000/translate app listening on port 3010!');
 });
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 })
-app.get('/detail', function (req, res) {
+app.get('/detail', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 })
+app.get("/robots.txt", (req, res) => {
+  res.type("text/plain");
+  res.send(
+    "User-agent: *\nAllow: /"
+  );
+});
