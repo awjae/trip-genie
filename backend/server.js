@@ -111,6 +111,65 @@ app.post('/searchImage', function (req, res) {
   });
 });
 
+const makeText = ({ contry, destination, days }) => {
+  let text = `${contry} ${destination} 주요 관광지 ${days}일 여행 일정을 JSON format으로 데이터만 알려주세요.`
+  return text;
+}
+app.post('/openai', async function (req, res) {
+  const {contry, destination, days} = req.body;
+  if (!destination || !days) return
+  const text = makeText({contry, destination, days});
+
+  const config = {
+    model: "gpt-3.5-turbo",
+    messages: [
+      {"role":"system", "content": `----foramt----\n{"DAY 1":[{"destination":"","latitude":"","longitude":""},{"destination":"","latitude":"","longitude":""},{"destination":"","latitude":"","longitude":""}]}"}`},
+      {"role":"user", "content": text}
+    ],
+    temperature: 1,
+    max_tokens: 2048,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+    stream: false,
+  };
+  const result = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(config),
+  }).then((data) => {
+    return data.json();
+  }).catch((err) => {
+    return err;
+  })
+
+  let str = result.choices[0].message.content;
+  if (!str) res.err('데이터 불량');
+  str = str.replaceAll("\n","").replaceAll("\\\"","\"").replaceAll("]}{","],").replaceAll("]{","],{").replaceAll("]},{","],").replaceAll("],{\"","],\"").replaceAll("}D","},D").replaceAll("]\"","],\"").replace("{ {", "{").replaceAll("\\'","\'").replace("{```{", "{").replace('}```"}',"}");
+  if (str[str.length-1] === ".") {
+    str = str.slice(0, -1);
+  }
+  if (str[0] !== "{") {
+    str = `{${str}`;
+  }
+  if (str[str.length-1] !== "\"" && str[str.length-1] !== "}") {
+    str = `${str}"}`;
+  }
+  if (str[str.length-1] !== "}") {
+    str = `${str}}`;
+  }
+
+  const validateResult = {
+    ...result,
+    validateResponse: JSON.parse(str),
+  }
+  
+  res.status(200).json(validateResult);
+});
+
 app.listen(3000, () => {
   console.log('http://127.0.0.1:3000/translate app listening on port 3010!');
 });
