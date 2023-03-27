@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import airplane from '@/images/airplane.png';
 import hatchback from '@/images/hatchback.png';
 import { getPlan } from '@/utils/openai';
+import { getPlan_server } from '@/utils/searchAPI';
 import { InputForm } from '@/types/input';
 import Board from '@/components/Board';
 import { MOCK_CARDLIST, MOCK_DATA } from '@/assets/mock';
@@ -33,7 +34,7 @@ function Home() {
   const setData = useDataStore((state: any) => state.setData);
   const [curtain, setCurtain] = useState(false);
 
-  const getPlanAPI = useMutation('getPlan', () => getPlan(inputForm), {
+  const getPlanAPI = useMutation('getPlan', () => getPlan_server(inputForm), {
     onSuccess(data: any, variables, context) {
       setBotState({animationSteps: 2});
       setData(data.validateResponse);
@@ -52,12 +53,12 @@ function Home() {
   const getPlanAPIHandler = async () => {
     if (validationInputForm()) return;
     await playAnalyzeAnimation(); 
-    if (process.env.NODE_ENV === "development") {
-      setBotState({animationSteps: 2}); 
-      setData(MOCK_DATA);
-    } else {
+    // if (process.env.NODE_ENV === "development") {
+    //   setBotState({animationSteps: 2}); 
+    //   setData(MOCK_DATA);
+    // } else {
       getPlanAPI.mutate();
-    }
+    // }
   } 
   const playAnalyzeAnimation = async () => {
     setInputForm({...inputForm, animationSteps: 1});

@@ -1,10 +1,13 @@
 import { MOCK_BLOG_DATA } from "@/assets/mock";
+import { InputForm } from "@/types/input";
 
 let SEARCH_BLOG_PROXY_API_URL = './searchBlog';
 let SEARCH_IMAGE_PROXY_API_URL = './searchImage';
+let GET_PLAN_API_URL = './openai';
 if (process.env.NODE_ENV === "development") {
 	SEARCH_BLOG_PROXY_API_URL = '//localhost:3000/searchBlog';
 	SEARCH_IMAGE_PROXY_API_URL = '//localhost:3000/searchImage';
+	GET_PLAN_API_URL = '//localhost:3000/openai';
 }
 
 export const getSearchBlog = async (query : string) => {
@@ -127,4 +130,18 @@ export const getSearchImage = async (query: string) => {
   
   const res = await fetch(SEARCH_IMAGE_PROXY_API_URL, options);
   return res.json();
+}
+
+export const getPlan_server = async ({ contry, destination, days }: InputForm) => {
+	return await fetch(GET_PLAN_API_URL, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ contry: contry, destination: destination, days: days }),
+  }).then((data) => {
+    return data.json();
+  }).catch((err) => {
+    return err;
+  })
 }

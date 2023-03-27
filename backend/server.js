@@ -117,7 +117,7 @@ const makeText = ({ contry, destination, days }) => {
 }
 app.post('/openai', async function (req, res) {
   const {contry, destination, days} = req.body;
-  if (!destination || !days) return
+  if (!destination || !days) return res.status(405).err();
   const text = makeText({contry, destination, days});
 
   const config = {
@@ -133,19 +133,25 @@ app.post('/openai', async function (req, res) {
     presence_penalty: 0,
     stream: false,
   };
-  const result = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(config),
-  }).then((data) => {
-    return data.json();
-  }).catch((err) => {
-    return err;
+  
+  const api = new Promise((res, rej) => {
+    request('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(config),
+    }, (err, response, body) => {
+      if (!err && response.statusCode === 200) {
+        res(JSON.parse(body));
+      } else {
+        rej(err);
+      }
+    })
   })
 
+  const result = await api;
   let str = result.choices[0].message.content;
   if (!str) res.err('데이터 불량');
   str = str.replaceAll("\n","").replaceAll("\\\"","\"").replaceAll("]}{","],").replaceAll("]{","],{").replaceAll("]},{","],").replaceAll("],{\"","],\"").replaceAll("}D","},D").replaceAll("]\"","],\"").replace("{ {", "{").replaceAll("\\'","\'").replace("{```{", "{").replace('}```"}',"}");
@@ -166,7 +172,6 @@ app.post('/openai', async function (req, res) {
     ...result,
     validateResponse: JSON.parse(str),
   }
-  
   res.status(200).json(validateResult);
 });
 
