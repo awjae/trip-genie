@@ -101,6 +101,11 @@ function Contents({ title, data, click, setImageViewer }: ContentsType) {
     } else {
       imageSearch.mutate(target.destination);
     }
+    
+    return () => {
+      window.sessionStorage.setItem("isAbort", "true");
+      currController.abort();
+    }
   }, [selectedList])
   
   return (
