@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from "react-router-dom";
 import styled from '@emotion/styled';
@@ -101,6 +101,24 @@ function Home() {
     },1800);
   }
 
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      if (window.orientation === 90 || window.orientation === -90) {
+        window.screen.orientation.lock('portrait');
+      } else {
+        window.screen.orientation.unlock();
+      }
+    };
+    if (window.orientation !== undefined) {
+      window.addEventListener('orientationchange', handleOrientationChange);
+    }
+    return () => {
+      if (window.orientation !== undefined) {
+        window.removeEventListener('orientationchange', handleOrientationChange);
+      }
+    };
+  }, []);
+
   return (
     <HomeContainer>
       <img src={airplane} alt="" />
@@ -110,7 +128,7 @@ function Home() {
             <h1>트립지니 - AI 여행플래너</h1>
             <input type="text" placeholder='어느 나라?' value={inputForm.contry} onChange={(e) => setInputForm({...inputForm, contry: e.target.value})}/>
             <input type="text" placeholder='어느 지역?' value={inputForm.destination} onChange={(e) => setInputForm({...inputForm, destination: e.target.value})}/>
-            <input type="number" placeholder='몇 일?' value={inputForm.days} onChange={(e) => setInputForm({...inputForm, days: e.target.value})}/>
+            <input type="number" placeholder='몇 일?' value={inputForm.days} onChange={(e) => setInputForm({...inputForm, days: e.target.value})} min="0" step="1"/>
             <button onClick={getPlanAPIHandler}>완료!</button>
           </Form>
           <Bot animationSteps={botState.animationSteps} goDetail={goDetail}></Bot>

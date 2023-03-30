@@ -352,6 +352,7 @@ const LeftNav = styled.nav`
   }
   @media (max-width: 800px) {
     margin-left: 0;
+    top: 180px;
     li {
       width: 50px;
       height: 35px;
