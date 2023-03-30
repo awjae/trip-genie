@@ -101,24 +101,6 @@ function Home() {
     },1800);
   }
 
-  useEffect(() => {
-    const handleOrientationChange = () => {
-      if (window.orientation === 90 || window.orientation === -90) {
-        window.screen.orientation.lock('portrait');
-      } else {
-        window.screen.orientation.unlock();
-      }
-    };
-    if (window.orientation !== undefined) {
-      window.addEventListener('orientationchange', handleOrientationChange);
-    }
-    return () => {
-      if (window.orientation !== undefined) {
-        window.removeEventListener('orientationchange', handleOrientationChange);
-      }
-    };
-  }, []);
-
   return (
     <HomeContainer>
       <img src={airplane} alt="" />

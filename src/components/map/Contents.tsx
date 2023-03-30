@@ -175,7 +175,9 @@ const ContentsContainer = styled.section`
 
 const SelectedListWrapper = styled.ul`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between;  
+  margin: 10px 0;
+  overflow-x: auto;
   li {
     display: flex;
     cursor: pointer;
@@ -183,9 +185,13 @@ const SelectedListWrapper = styled.ul`
     align-items: center;
     border-radius: 15px;
     padding: 10px;
+    margin-bottom: 10px;
     background-color: #e5c967;
     width: 25%;
     height: 50px;
+    &:not(:last-of-type) {
+      margin-right: 10px;
+    }
     &:hover, &.active {
       background-color: #fedf73;
     }
