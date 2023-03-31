@@ -9,7 +9,7 @@ function BlogContents() {
   // const [blogData, setBlogData] = useState(MOCK_BLOG_DATA);
   const input = useInputStore((state: any) => state.input);
   const [blogData, setBlogData] = useState([]);
-  useQuery("searchBlog", () => getSearchBlog(`${input.contry} ${input.destination}`), {
+  useQuery("searchBlog", () => getSearchBlog(`${input.contry} ${input.destination} 맛집`), {
     onSuccess(data) {
       setBlogData(JSON.parse(data).items);
     },
@@ -17,7 +17,7 @@ function BlogContents() {
 
   return (
     <BlogContentsContainer>
-      <h2>추천 블로그...</h2>
+      <h2>추천 맛집 블로그!</h2>
       <ul>
         {
           blogData.length > 0 && blogData.map((blog: any, idx) => (
