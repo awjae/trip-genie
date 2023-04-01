@@ -6,6 +6,8 @@ const cors = require('cors');
 const MOCK_DATA = require('./data.ts');
 const path = require('path');
 require('dotenv').config();
+const axios = require('axios');
+const cheerio = require('cheerio');
 
 const app = express();
 app.use(cors());
@@ -175,9 +177,17 @@ app.post('/openai', async function (req, res) {
   res.status(200).json(validateResult);
 });
 
-app.listen(3000, () => {
-  console.log('http://127.0.0.1:3000/translate app listening on port 3010!');
-});
+app.post('/crawling', async function (req, res) {
+  const { url } = req.body;
+  const resp = await axios.get(url);
+  const $ = cheerio.load(resp.data); 
+
+})
+
+// app.listen(3000, () => {
+//   console.log('http://127.0.0.1:3000/translate app listening on port 3010!');
+// });
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 })
@@ -190,3 +200,4 @@ app.get("/robots.txt", (req, res) => {
     "User-agent: *\nAllow: /"
   );
 });
+
