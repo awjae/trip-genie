@@ -149,14 +149,13 @@ export const getPlan_server = async ({ contry, destination, days }: InputForm) =
 }
 
 export const getPlaceReason_server = async ({ contry, destination, place, signal }: InputForm) => {
-	console.log("getPlaceReason_server : " , signal)
 	return await fetch(GET_REASON_API_URL, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ contry: contry, destination: destination, place: place, signal: signal }),
-		signal: signal
+    body: JSON.stringify({ contry: contry, destination: destination, place: place, signalInstance: signal }),
+		signal: signal,
   }).then((data) => {
     return data.json();
   }).catch((err) => {

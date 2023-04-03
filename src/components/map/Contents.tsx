@@ -29,7 +29,7 @@ function Contents({ title, data, click, setImageViewer }: ContentsType) {
       setImageList(items);
     },
   });
-  const placeReason = useMutation('placeReason', getPlaceReason_server, {
+  const placeReason = useMutation('placeReason', getPlaceReason, {
     onSuccess(data, variables, context) {
       if (!data || !data.body || !variables.place) return
       if (data.body === "development") {
@@ -68,16 +68,16 @@ function Contents({ title, data, click, setImageViewer }: ContentsType) {
     if (selectedList[idx].isActive) return
     setReason("");
     currController.abort();
-    const tempController = new AbortController();
     window.sessionStorage.setItem("isAbort", "true");
+    
     if (placeReasonStore[item.destination]) {
       setReason(placeReasonStore[item.destination]);
     } else {
-      console.log(tempController.signal)
-      placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination, signal: tempController.signal });
+      const tempController = new AbortController();
+      placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination, signal: tempController.abort });
+      setCurrController(tempController);
     }
     setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
-    setCurrController(tempController);
     click(item);
   };
 
@@ -87,7 +87,9 @@ function Contents({ title, data, click, setImageViewer }: ContentsType) {
         if (placeReasonStore[item.destination]) {
           setReason(placeReasonStore[item.destination]);
         } else {
-          placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination });
+          const tempController = new AbortController();
+          placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination, signal: tempController.abort });
+          setCurrController(tempController);
         }
         return {...item, isActive: true };
       }

@@ -178,8 +178,9 @@ app.post('/openai', async function (req, res) {
   res.status(200).json(validateResult);
 });
 app.post('/openai/stream', async function (req, res) {
-  const {contry, destination, place, signal} = req.body;
-  console.log(signal)
+  const {contry, destination, place, signalInstance} = req.body;
+  const controller = new AbortController();
+  const { signal } = controller;
   const text = makePlaceText({contry, destination, place});
   const config = {
     model: "gpt-3.5-turbo",
@@ -195,7 +196,7 @@ app.post('/openai/stream', async function (req, res) {
     stream: true,
   };
   const requestOptions = {
-    url: 'https://api.openai.com/v1/completions',
+    url: 'https://api.openai.com/v1/chat/completions',
     method: 'POST',
     headers: {
       Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
@@ -207,18 +208,40 @@ app.post('/openai/stream', async function (req, res) {
 
   const stream = request(requestOptions);
 
-  stream.on('data', (data) => {
+  stream.on('data', async (data) => {
     // 스트림에서 데이터를 읽고 처리하는 코드를 작성하십시오.
-    const result = JSON.parse(data.toString());
-    console.log(result);
+    // const result = JSON.parse(data.toString());
+    const decoder = new TextDecoder('utf-8');
+  
+    const chunk = decoder.decode(data);
+    if (!chunk) { res.end(); }
+    const validate = chunk.split("\n").filter(item => item !== '').filter(item => item !== "data: [DONE]").map(el => JSON.parse(el.slice(6)))
+    .filter(json => json?.choices[0].delta.content).map(json => json.choices[0].delta.content);
+    res.write(validate[0]);
+
+    // let result = '';
+    //call by value 로 인해 sesstion 처리
+    // while (true) {
+    //   const chunk = decoder.decode(data);
+    //   const validate = chunk.split("\n").filter(item => item !== '').filter(item => item !== "data: [DONE]").map(el => JSON.parse(el.slice(6)))
+    //   .filter(json => json?.choices[0].delta.content).map(json => json.choices[0].delta.content);
+    //   console.log(validate)
+    //   // if (validate[0]) {
+    //   //   result += validate[0];
+    //   //   // setReason(result);
+    //   //   console.log(result)
+    //   // }
+    // }
+
+
   });
   stream.on('error', (error) => {
     console.error(error);
   });
-  // stream.on('response', (response) => {
-  //   console.log(response.statusCode);
-  //   console.log(response.headers['content-type']);
-  // });
+  stream.on('response', (response) => {
+    console.log(response.statusCode);
+    console.log(response.headers['content-type']);
+  });
 });
 
 const makePlaceText = ({ contry, destination, place }) => {
