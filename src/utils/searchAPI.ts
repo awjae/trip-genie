@@ -4,10 +4,12 @@ import { InputForm } from "@/types/input";
 let SEARCH_BLOG_PROXY_API_URL = './searchBlog';
 let SEARCH_IMAGE_PROXY_API_URL = './searchImage';
 let GET_PLAN_API_URL = './openai';
+let GET_REASON_API_URL = './openai/stream';
 if (process.env.NODE_ENV === "development") {
 	SEARCH_BLOG_PROXY_API_URL = '//localhost:3000/searchBlog';
 	SEARCH_IMAGE_PROXY_API_URL = '//localhost:3000/searchImage';
 	GET_PLAN_API_URL = '//localhost:3000/openai';
+	GET_REASON_API_URL = '//localhost:3000/openai/stream';
 }
 
 export const getSearchBlog = async (query : string) => {
@@ -145,3 +147,19 @@ export const getPlan_server = async ({ contry, destination, days }: InputForm) =
     return err;
   })
 }
+
+export const getPlaceReason_server = async ({ contry, destination, place, signal }: InputForm) => {
+	console.log("getPlaceReason_server : " , signal)
+	return await fetch(GET_REASON_API_URL, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ contry: contry, destination: destination, place: place, signal: signal }),
+		signal: signal
+  }).then((data) => {
+    return data.json();
+  }).catch((err) => {
+    return err;
+  })
+};

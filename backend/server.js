@@ -7,6 +7,7 @@ const MOCK_DATA = require('./data.ts');
 const path = require('path');
 require('dotenv').config();
 const axios = require('axios');
+const { Readable } = require('stream')
 const cheerio = require('cheerio');
 
 const app = express();
@@ -176,17 +177,64 @@ app.post('/openai', async function (req, res) {
   }
   res.status(200).json(validateResult);
 });
+app.post('/openai/stream', async function (req, res) {
+  const {contry, destination, place, signal} = req.body;
+  console.log(signal)
+  const text = makePlaceText({contry, destination, place});
+  const config = {
+    model: "gpt-3.5-turbo",
+    messages: [
+      {"role": "system", "content": "You are travel planner"},
+      {"role":"user", "content": text}
+    ],
+    temperature: .5,
+    max_tokens: 1024,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+    stream: true,
+  };
+  const requestOptions = {
+    url: 'https://api.openai.com/v1/completions',
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(config),
+    signal: signal
+  };
 
+  const stream = request(requestOptions);
+
+  stream.on('data', (data) => {
+    // 스트림에서 데이터를 읽고 처리하는 코드를 작성하십시오.
+    const result = JSON.parse(data.toString());
+    console.log(result);
+  });
+  stream.on('error', (error) => {
+    console.error(error);
+  });
+  // stream.on('response', (response) => {
+  //   console.log(response.statusCode);
+  //   console.log(response.headers['content-type']);
+  // });
+});
+
+const makePlaceText = ({ contry, destination, place }) => {
+  let text = `${contry} ${destination}의 관광지 ${place}을 추천하는 이유를 간단하게 100자 이내로 알려주세요.`;
+  return text;
+}
 app.post('/crawling', async function (req, res) {
   const { url } = req.body;
   const resp = await axios.get(url);
   const $ = cheerio.load(resp.data); 
 
-})
+});
 
-// app.listen(3000, () => {
-//   console.log('http://127.0.0.1:3000/translate app listening on port 3010!');
-// });
+app.listen(3000, () => {
+  console.log('http://127.0.0.1:3000/translate app listening on port 3010!');
+});
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));

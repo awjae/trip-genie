@@ -7,6 +7,7 @@ import { useMutation } from 'react-query';
 import BlogContents from '@/components/map/BlogContents';
 import ImageContents from '@/components/ImageContents';
 import { getPlaceReason } from '@/utils/openai';
+import { getPlaceReason_server } from '@/utils/searchAPI';
 import useInputStore from '@/store/inputStore';
 import useMapStore from '@/store/mapStore';
 
@@ -28,7 +29,7 @@ function Contents({ title, data, click, setImageViewer }: ContentsType) {
       setImageList(items);
     },
   });
-  const placeReason = useMutation('placeReason', getPlaceReason, {
+  const placeReason = useMutation('placeReason', getPlaceReason_server, {
     onSuccess(data, variables, context) {
       if (!data || !data.body || !variables.place) return
       if (data.body === "development") {
@@ -72,6 +73,7 @@ function Contents({ title, data, click, setImageViewer }: ContentsType) {
     if (placeReasonStore[item.destination]) {
       setReason(placeReasonStore[item.destination]);
     } else {
+      console.log(tempController.signal)
       placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination, signal: tempController.signal });
     }
     setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
