@@ -1,5 +1,4 @@
-const CracoAlias = require('craco-alias')
-
+const CracoAlias = require('craco-alias');
 module.exports = {
   plugins: [
     {
@@ -10,6 +9,24 @@ module.exports = {
       },
     },
   ],
+  jest: {
+    configure: {
+      moduleNameMapper: {
+        // '^@/(.*)$': '<rootDir>/src/$1',
+        "^@/images/(.*)$": "<rootDir>/src/assets/images/$1",
+        "^@/assets/(.*)$": "<rootDir>/src/assets/$1",
+        "^@/pages/(.*)$": "<rootDir>/src/pages/$1",
+        "^@/components/(.*)$": "<rootDir>/src/components/$1",
+        "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
+        "^@/types/(.*)$": "<rootDir>/src/types/$1",
+        "^@/store/(.*)$": "<rootDir>/src/store/$1",
+      },
+      transformIgnorePatterns: ["/node_modules/(?!ol)"],
+      transform: {
+        '^.+\\.(js|jsx)$': 'babel-jest'
+      }
+    },
+  },
 //   webpack: {
 //     configure: {
 //       output: {
