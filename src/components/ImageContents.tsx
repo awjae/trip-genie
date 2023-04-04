@@ -32,6 +32,7 @@ const ImageContentsContainer = styled.section`
       max-height: 350px;
       object-fit: cover;
       cursor: pointer;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
       @media (max-width: 800px) {
         max-height: 150px;
       }
@@ -55,6 +56,7 @@ const ImageContentsContainer = styled.section`
         height: 80px;
         border-radius: 15px;
         cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 10px;
       }
     }
   }

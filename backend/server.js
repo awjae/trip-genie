@@ -77,7 +77,7 @@ const PAPAGO_PW = process.env.REACT_APP_PAPAGO_PW_3;
 // });
 app.post('/searchBlog', function (req, res) {
   const { query } = req.body;
-  const api_url = `https://openapi.naver.com/v1/search/blog?query=${encodeURI(query)}`;
+  const api_url = `https://openapi.naver.com/v1/search/blog?query=${encodeURI(query)}&display=20`;
   const options = {
     url: api_url,
     headers: {
@@ -177,6 +177,7 @@ app.post('/openai', async function (req, res) {
   }
   res.status(200).json(validateResult);
 });
+
 app.post('/openai/stream', async function (req, res) {
   const {contry, destination, place, signalInstance} = req.body;
   const controller = new AbortController();
