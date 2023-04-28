@@ -1,6 +1,9 @@
 # Trip Genie
 AI 여행 플래너
 
+# Demo
+[트립 지니 - AI 여행플래너](https://www.tripgenie.kr)
+
 # Commit Convention
 ```bash
 [ADD] : 신기능 추가/개선
