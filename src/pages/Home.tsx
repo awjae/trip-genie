@@ -53,12 +53,13 @@ function Home() {
   const getPlanAPIHandler = async () => {
     if (validationInputForm()) return;
     await playAnalyzeAnimation(); 
-    if (process.env.NODE_ENV === "development") {
-      setBotState({animationSteps: 2}); 
-      setData(MOCK_DATA);
-    } else {
-      getPlanAPI.mutate();
-    }
+    getPlanAPI.mutate();
+    // if (process.env.NODE_ENV === "development") {
+    //   setBotState({animationSteps: 2}); 
+    //   setData(MOCK_DATA);
+    // } else {
+    //   getPlanAPI.mutate();
+    // }
   } 
   const playAnalyzeAnimation = async () => {
     setInputForm({...inputForm, animationSteps: 1});

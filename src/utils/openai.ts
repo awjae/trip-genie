@@ -18,7 +18,7 @@ import { InputForm } from '@/types/input';
 //   return text;
 // }
 const makeText = ({ contry, destination, days }: InputForm) => {
-  let text = `${contry} ${destination} 주요 관광지 ${days}일 여행 일정을 JSON format으로 데이터만 알려주세요.`
+  let text = `${contry} ${destination} 주요 관광지 ${days}일 여행 일정을 JSON format으로 데이터만`
   return text;
 }
 export const getPlan = async ({ contry, destination, days }: InputForm) => {
