@@ -180,6 +180,7 @@ app.post('/openai', async function (req, res) {
 
 app.post('/openai/stream', async function (req, res) {
   const {contry, destination, place, signalInstance} = req.body;
+  console.log(signalInstance)
   const controller = new AbortController();
   const { signal } = controller;
   const text = makePlaceText({contry, destination, place});

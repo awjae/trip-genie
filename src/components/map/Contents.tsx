@@ -74,7 +74,7 @@ function Contents({ title, data, click, setImageViewer }: ContentsType) {
       setReason(placeReasonStore[item.destination]);
     } else {
       const tempController = new AbortController();
-      placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination, signal: tempController.abort });
+      placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination, signal: tempController.signal });
       setCurrController(tempController);
     }
     setSelectedList(selectedList.map((el, jdx) => idx === jdx ? {...el, isActive: true} : {...el, isActive: false}));
@@ -88,7 +88,7 @@ function Contents({ title, data, click, setImageViewer }: ContentsType) {
           setReason(placeReasonStore[item.destination]);
         } else {
           const tempController = new AbortController();
-          placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination, signal: tempController.abort });
+          placeReason.mutate({ contry: input.contry, destination: input.destination, place: item.destination, signal: tempController.signal });
           setCurrController(tempController);
         }
         return {...item, isActive: true };
